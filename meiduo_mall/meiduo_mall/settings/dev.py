@@ -90,12 +90,43 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.mysql', # 数据库引擎
+        'HOST': '122.51.161.120', # 数据库主机
+        'PORT': 3306, # 数据库端口
+        'USER': 'python', # 数据库用户名
+        'PASSWORD': 'mysql', # 数据库用户密码
+        'NAME': 'meiduo_mall' # 数据库名字
+    },
 }
+
+
+CACHES = {
+    "default": { # 默认
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://122.51.161.120:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    "session": { # session
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://122.51.161.120:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+}
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "session"
 
 
 # Password validation
@@ -135,3 +166,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+# 配置静态文件加载路径
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
