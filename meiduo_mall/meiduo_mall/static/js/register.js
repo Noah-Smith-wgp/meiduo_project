@@ -7,17 +7,29 @@ let vm = new Vue({
         password2: '',
         mobile: '',
         allow: '',
+        image_code_url: '',
+        uuid: '',
+        image_code: '',
 
         error_username: false,
         error_password: false,
         error_password2: false,
         error_mobile: false,
         error_allow: false,
+        error_image_code: false,
 
         error_username_msg: '',
         error_mobile_msg: '',
+        error_image_code_mag: '',
+    },
+    mounted(){ //监听页面是否加载完成
+        this.generate_image_code();
     },
     methods:{
+        generate_image_code(){
+            this.uuid = generateUUID();
+            this.image_code_url = '/image_codes/' + this.uuid + '/';
+        },
         check_username(){
             let re=/^[a-zA-Z0-9_-]{5,20}$/;
             if (re.test(this.username)){
@@ -84,6 +96,14 @@ let vm = new Vue({
                     .catch(error => {
                         console.log(error.response);
                     })
+            }
+        },
+        check_image_code(){
+            if (this.image_code.length != 4){
+                this.error_image_code_msg = '请填写图片验证码';
+                this.error_image_code = true;
+            }else{
+                this.error_image_code = false;
             }
         },
         check_allow(){
