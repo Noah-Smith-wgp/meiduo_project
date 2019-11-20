@@ -25,7 +25,27 @@ let vm = new Vue({
             }else {
                 this.error_username_msg = '请输入5-20个字符的用户名';
                 this.error_username = true;
-                }
+            }
+
+        //    发送ajax请求，判断用户名是否重复注册
+            if (this.error_username==false){
+                let url = '/usernames/'+this.username+'/count/';
+                axios.get(url, {
+                    responseType: 'json'
+                })
+                    .then(response => {
+                        if (response.data.count == 1){
+                            // 用户名已存在
+                            this.error_username_msg = '用户名已存在';
+                            this.error_username = true;
+                        }else{
+                            this.error_username = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error.response);
+                    })
+            }
         },
         check_password(){
             let re=/^[a-zA-Z0-9]{8,20}$/;
@@ -49,6 +69,21 @@ let vm = new Vue({
             }else{
                 this.error_mobile_msg = '您输入的手机号格式不正确';
                 this.error_mobile = true;
+            }
+            if (this.error_mobile == false){
+                let url = '/mobiles/'+this.mobile+'/count/';
+                axios.get(url, {
+                    responseType: 'json'
+                })
+                    .then(response => {
+                        if (response.data.count == 1){
+                            this.error_mobile_msg = '手机号已存在';
+                            this.error_mobile = true;
+                        }else{this.error_mobile = false}
+                    })
+                    .catch(error => {
+                        console.log(error.response);
+                    })
             }
         },
         check_allow(){

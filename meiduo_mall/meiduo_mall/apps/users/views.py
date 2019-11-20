@@ -1,10 +1,26 @@
 from django import http
-from django.shortcuts import render, redirect,reverse
+from django.contrib.auth import login
+from django.shortcuts import render, redirect, reverse
+from django.db import DatabaseError
 import re
 # Create your views here.
+
 from django.views import View
 
 from users.models import User
+from meiduo_mall.utils.response_code import RETCODE
+
+
+class UsernameCountView(View):
+    def get(self, request, username):
+        count = User.objects.filter(username=username).count()
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'count': count})
+
+
+class MobileCountView(View):
+    def get(self, request, mobile):
+        count = User.objects.filter(mobile=mobile).count()
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'count': count})
 
 
 class RegisterView(View):
@@ -38,8 +54,10 @@ class RegisterView(View):
             return http.HttpResponseForbidden('请勾选用户协议')
 
         try:
-            User.objects.create_user(username=username, password=password, mobile=mobile)
-        except Exception:
+            user = User.objects.create_user(username=username, password=password, mobile=mobile)
+        except DatabaseError:
             return render(request, 'register.html', {'register_errmsg': '注册失败'})
+
+        login(request, user)
 
         return redirect(reverse('contents:index'))

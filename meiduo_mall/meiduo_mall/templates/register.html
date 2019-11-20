@@ -61,7 +61,11 @@
 							<input type="checkbox" v-model="allow" @blur="check_allow" name="allow" id="allow">
 							<label>同意”美多商城用户使用协议“</label>
 							<span class="error_tip" v-show="error_allow">请勾选用户协议</span>
-						</li>
+
+                            {% if register_errmsg %}
+                                <span class="error_tip">{{ register_errmsg }}</span>
+                            {% endif %}
+                        </li>
 						<li class="reg_sub">
 							<input type="submit" value="注 册">
 						</li>
@@ -83,9 +87,6 @@
 		<p>CopyRight © 2016 北京美多商业股份有限公司 All Rights Reserved</p>
 		<p>电话：010-****888    京ICP备*******8号</p>
 	</div>
-    {% if register_errmsg %}
-        <span class="footer no-mp">{{ register_errmsg }}</span>
-    {% endif %}
     </div>
     <script type="text/javascript" src="{{ static('js/register.js') }}"></script>
 </body>
