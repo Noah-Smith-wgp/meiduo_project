@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'users',
     'contents',
+    'verifications',
 ]
 
 MIDDLEWARE = [
@@ -125,6 +126,13 @@ CACHES = {
     "session": { # session
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://122.51.161.120:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    "verify_code": { # 验证码
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://122.51.161.120:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
