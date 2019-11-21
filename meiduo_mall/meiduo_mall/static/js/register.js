@@ -147,6 +147,9 @@ let vm = new Vue({
                         if (response.data.code == '4001'){
                             this.error_image_code_msg = response.data.errmsg;
                             this.error_image_code = true;
+                        }else{
+                            this.error_sms_code_msg = response.data.errmsg;
+                            this.error_sms_code = true;
                         }
                         this.generate_image_code();
                         this.sending_flag = false;
