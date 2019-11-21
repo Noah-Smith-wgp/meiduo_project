@@ -10,6 +10,8 @@ let vm = new Vue({
         image_code_url: '',
         uuid: '',
         image_code: '',
+        sms_code: '',
+        sms_code_tip: '获取短信验证码',
 
         error_username: false,
         error_password: false,
@@ -17,10 +19,13 @@ let vm = new Vue({
         error_mobile: false,
         error_allow: false,
         error_image_code: false,
+        error_sms_code: false,
+        sending_flag: false,
 
         error_username_msg: '',
         error_mobile_msg: '',
-        error_image_code_mag: '',
+        error_image_code_msg: '',
+        error_sms_code_msg: '',
     },
     mounted(){ //监听页面是否加载完成
         this.generate_image_code();
@@ -104,6 +109,60 @@ let vm = new Vue({
                 this.error_image_code = true;
             }else{
                 this.error_image_code = false;
+            }
+        },
+        send_sms_code(){
+            if (this.sending_flag == true){
+                return;
+            }
+            this.sending_flag = true;
+
+            this.check_mobile();
+            this.check_image_code();
+            if (this.error_mobile == true || this.error_image_code == true){
+                this.sending_flag = false;
+                return;
+            }
+
+            //请求短信验证码
+            let url = '/sms_codes/' + this.mobile + '/?image_code=' + this.image_code + '&uuid=' + this.uuid;
+            axios.get(url, {
+                responseType: 'json'
+            })
+                .then(response => {
+                    if (response.data.code == '0'){
+                        let num = 60;
+                        let t=setInterval(()=>{
+                            if (num == 1){
+                                clearInterval(t);
+                                this.sms_code_tip = '获取短信验证码';
+                                this.generate_image_code();
+                                this.sending_flag = false;
+                            }else{
+                                num -= 1;
+                                this.sms_code_tip = num + '秒';
+                            }
+                        }, 1000)
+                    }else{
+                        if (response.data.code == '4001'){
+                            this.error_image_code_msg = response.data.errmsg;
+                            this.error_image_code = true;
+                        }
+                        this.generate_image_code();
+                        this.sending_flag = false;
+                    }
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    this.sending_flag = false;
+                })
+        },
+        check_sms_code(){
+            if (this.sms_code.length != 6){
+                this.error_sms_code_msg = '请填写短信验证码';
+                this.error_sms_code = true;
+            }else{
+                this.error_sms_code = false;
             }
         },
         check_allow(){
