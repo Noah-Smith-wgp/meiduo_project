@@ -177,11 +177,12 @@ let vm = new Vue({
             this.check_password();
             this.check_password2();
             this.check_mobile();
+            this.check_sms_code();
             this.check_allow();
 
             if (this.error_username == true || this.error_password == true || this.error_password2 == true
                 || this.error_mobile == true || this.error_allow == true) {
-                // 禁用表单的提交
+                // 注册参数不全，禁用表单的提交
                 window.event.returnValue = false;
             }
         }
