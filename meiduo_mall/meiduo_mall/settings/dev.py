@@ -240,3 +240,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # AUTH_USER_MODEL = 'auth.User' # 默认的
 # AUTH_USER_MODEL = '用户子应用名字.用户模型类'
 AUTH_USER_MODEL = 'users.User'
+
+# AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+# 指定自定义的用户认证后端
+AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileAuthBackend']
