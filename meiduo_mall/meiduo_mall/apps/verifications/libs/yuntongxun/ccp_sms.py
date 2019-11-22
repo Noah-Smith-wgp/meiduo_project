@@ -56,6 +56,7 @@ class CCP(object):
             cls._instance = super(CCP, cls).__new__(cls, *args, **kwargs)
             # rest = REST(_serverIP, _serverPort, _softVersion)
             # cls._instance.rest = rest
+            #初始化REST_SDK
             cls._instance.rest = REST(_serverIP, _serverPort, _softVersion)
             cls._instance.rest.setAccount(_accountSid, _accountToken)
             cls._instance.rest.setAppId(_appId)
