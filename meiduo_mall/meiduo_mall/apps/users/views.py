@@ -5,10 +5,18 @@ from django.db import DatabaseError
 import re
 from django_redis import get_redis_connection
 from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from users.models import User
 from meiduo_mall.utils.response_code import RETCODE
 # Create your views here.
+
+
+class UserInfoView(LoginRequiredMixin, View):
+    """用户中心"""
+    def get(self, request):
+        """提供个人信息页面"""
+        return render(request, 'user_center_info.html')
 
 
 class LogoutView(View):
@@ -75,8 +83,15 @@ class LoginView(View):
             #记住用户：None表示两周后过期
             request.session.set_expiry(None)
 
-        #响应登录结果
-        response = redirect(reverse('contents:index'))
+        #获取next参数
+        next = request.GET.get('next')
+        #判断登录地址中是否有next参数
+        if not next:
+            #创建响应对象
+            response = redirect(reverse('contents:index'))
+        else:
+            response = redirect(next)
+
         # 将用户名写入到cookie
         # response.set_cookie('key', 'value', '过期时间')
         response.set_cookie('username', user.username, expires=3600 * 24 * 14)

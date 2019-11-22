@@ -244,3 +244,5 @@ AUTH_USER_MODEL = 'users.User'
 # AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 # 指定自定义的用户认证后端
 AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileAuthBackend']
+
+LOGIN_URL = '/login/'
