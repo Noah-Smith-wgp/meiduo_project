@@ -62,7 +62,14 @@ class LoginView(View):
             #记住用户：None表示两周后过期
             request.session.set_expiry(None)
 
-        return redirect(reverse('contents:index'))
+        #响应登录结果
+        response = redirect(reverse('contents:index'))
+        # 将用户名写入到cookie
+        # response.set_cookie('key', 'value', '过期时间')
+        response.set_cookie('username', user.username, expires=3600 * 24 * 14)
+
+        #响应结果
+        return response
 
 
 class UsernameCountView(View):
@@ -153,5 +160,12 @@ class RegisterView(View):
         #状态保持：如果成功就表示用户登入到美多商城
         login(request, user)
 
+        #创建响应对象
+        response = redirect(reverse('contents:index'))
+
+        #将用户名写入到cookie
+        # response.set_cookie('key', 'value', '过期时间')
+        response.set_cookie('username', user.username, expires=3600*24*14)
+
         #响应注册结果：重定向到首页
-        return redirect(reverse('contents:index'))
+        return response
