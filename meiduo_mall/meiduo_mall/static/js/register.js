@@ -1,6 +1,6 @@
 let vm = new Vue({
     el:'.app',
-    delimiters: ['[[',']]'],
+    delimiters: ['[[',']]'],  //修改Vue读取变量的语法
     data: {
         username: '',
         password: '',
@@ -28,18 +28,27 @@ let vm = new Vue({
         error_sms_code_msg: '',
     },
     mounted(){ //监听页面是否加载完成
+        //生成图形验证码
         this.generate_image_code();
     },
     methods:{
+        //生成图形验证码
         generate_image_code(){
+            //生成UUID。generateUUID():封装在common.js文件中，需要提前引入
             this.uuid = generateUUID();
+            //拼接图形验证码请求地址
             this.image_code_url = '/image_codes/' + this.uuid + '/';
         },
+        //校验用户名
         check_username(){
+            //定义正则表达式
             let re=/^[a-zA-Z0-9_-]{5,20}$/;
+            //使用正则判断用户名
             if (re.test(this.username)){
+                //用户名满足条件
                 this.error_username = false;
             }else {
+                //用户名不满足条件
                 this.error_username_msg = '请输入5-20个字符的用户名';
                 this.error_username = true;
             }
@@ -64,6 +73,7 @@ let vm = new Vue({
                     })
             }
         },
+        //校验密码
         check_password(){
             let re=/^[a-zA-Z0-9]{8,20}$/;
             if (re.test(this.password)){
@@ -72,6 +82,7 @@ let vm = new Vue({
                 this.error_password = true;
             }
         },
+        //校验确认密码
         check_password2(){
             if (this.password != this.password2){
                 this.error_password2 = true;
@@ -79,6 +90,7 @@ let vm = new Vue({
                 this.error_password2 = false;
             }
         },
+        //校验手机号
         check_mobile(){
             let re=/^1[3-9]\d{9}$/;
             if (re.test(this.mobile)){
@@ -112,11 +124,13 @@ let vm = new Vue({
             }
         },
         send_sms_code(){
+            //避免重复点击
             if (this.sending_flag == true){
                 return;
             }
             this.sending_flag = true;
 
+            //校验参数
             this.check_mobile();
             this.check_image_code();
             if (this.error_mobile == true || this.error_image_code == true){
@@ -131,6 +145,7 @@ let vm = new Vue({
             })
                 .then(response => {
                     if (response.data.code == '0'){
+                        //倒计时60秒
                         let num = 60;
                         let t=setInterval(()=>{
                             if (num == 1){
@@ -140,6 +155,7 @@ let vm = new Vue({
                                 this.sending_flag = false;
                             }else{
                                 num -= 1;
+                                //展示倒计时信息
                                 this.sms_code_tip = num + '秒';
                             }
                         }, 1000)
@@ -147,11 +163,12 @@ let vm = new Vue({
                         if (response.data.code == '4001'){
                             this.error_image_code_msg = response.data.errmsg;
                             this.error_image_code = true;
-                        }else{
+                        }else if(response.data.code == '4002'){
                             this.error_sms_code_msg = response.data.errmsg;
                             this.error_sms_code = true;
+                        }else{//4003缺少必传参数
+                            console.log(response.data)
                         }
-                        this.generate_image_code();
                         this.sending_flag = false;
                     }
                 })
@@ -168,6 +185,7 @@ let vm = new Vue({
                 this.error_sms_code = false;
             }
         },
+        // 校验是否勾选协议
         check_allow(){
             if (!this.allow){
                 this.error_allow = true;
@@ -175,6 +193,7 @@ let vm = new Vue({
                 this.error_allow = false;
             }
         },
+        //监听表单提交事件
         on_submit(){
             this.check_username();
             this.check_password();

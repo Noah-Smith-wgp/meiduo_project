@@ -45,12 +45,17 @@ def send_template_sms(to, datas, tempId):
 
 
 class CCP(object):
-    """发送短信的单例类"""
+    """发送短信的单例类：初始化并提供单例"""
+    #单例设计模式保证内存当中有且只有一个实例化对象
 
     def __new__(cls, *args, **kwargs):
+        #new方法初始化并提供单例
         # 判断是否存在类属性_instance，_instance是类CCP的唯一对象，即单例
         if not hasattr(CCP, "_instance"):
+            #cls:表示当前类对象CCP，我们将创建出来的对象绑定到CCP
             cls._instance = super(CCP, cls).__new__(cls, *args, **kwargs)
+            # rest = REST(_serverIP, _serverPort, _softVersion)
+            # cls._instance.rest = rest
             cls._instance.rest = REST(_serverIP, _serverPort, _softVersion)
             cls._instance.rest.setAccount(_accountSid, _accountToken)
             cls._instance.rest.setAppId(_appId)
@@ -75,6 +80,6 @@ class CCP(object):
 
 if __name__ == '__main__':
     # 注意：测试的短信模板编号为1
-    send_template_sms('18211672297', ['111111', 5], 1)
+    # send_template_sms('18211672297', ['111111', 5], 1)
 
-    # CCP().send_template_sms('18211672297', ['123456', 5], 1)
+    CCP().send_template_sms('18211672297', ['123456', 5], 1)

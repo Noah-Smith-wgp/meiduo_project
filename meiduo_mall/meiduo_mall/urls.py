@@ -18,7 +18,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('users.urls', namespace='users')),
-    url(r'^', include('contents.urls', namespace='contents')),
-    url(r'^', include('verifications.urls', namespace='verifications')),
+    url(r'^', include('users.urls', namespace='users')),  #users
+    url(r'^', include('contents.urls', namespace='contents')),  #首页
+    url(r'^', include('verifications.urls', namespace='verifications')),  #验证模块
 ]

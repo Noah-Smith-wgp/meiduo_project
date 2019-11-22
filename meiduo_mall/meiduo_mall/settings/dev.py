@@ -1,3 +1,4 @@
+#开发环境配置文件
 """
 Django settings for meiduo_mall project.
 
@@ -14,8 +15,13 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#print(BASE_DIR)
 
+#查看项目导包路径
 import sys
+# print(sys.path)
+
+# 追加导包
 
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
@@ -40,9 +46,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
-    'contents',
-    'verifications',
+    # 'meiduo_mall.apps.users', #用户模块
+    'users', #用户模块
+    'contents', #首页广告
+    'verifications', # 验证
 ]
 
 MIDDLEWARE = [
@@ -85,6 +92,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            #补充jinja2模板引擎环境
             'environment': 'meiduo_mall.utils.jinja2_env.jinja2_environment',
         },
     },
@@ -114,7 +122,7 @@ DATABASES = {
     },
 }
 
-
+#redis缓存
 CACHES = {
     "default": { # 默认
         "BACKEND": "django_redis.cache.RedisCache",
@@ -138,6 +146,7 @@ CACHES = {
         }
     },
 }
+#指定session数据存储引擎和位置
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "session"
 
@@ -206,9 +215,12 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+#
+# TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -224,5 +236,7 @@ STATIC_URL = '/static/'
 # 配置静态文件加载路径
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-
+# 指定自定义用户模型类
+# AUTH_USER_MODEL = 'auth.User' # 默认的
+# AUTH_USER_MODEL = '用户子应用名字.用户模型类'
 AUTH_USER_MODEL = 'users.User'
