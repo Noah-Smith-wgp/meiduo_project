@@ -39,7 +39,8 @@ class QQAuthUserView(View):
             oauth_user_model = OAuthQQUser.objects.get(openid=openid)
         except OAuthQQUser.DoesNotExist:
             #如果openid没有绑定美多商城用户
-            return render(request, 'oauth_callback.html')
+            context = {'openid': openid}
+            return render(request, 'oauth_callback.html', context)
         else:
             #如果openid已绑定美多商城用户
             #实现状态保持
