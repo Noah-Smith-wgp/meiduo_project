@@ -3,9 +3,12 @@ from django.views import View
 from QQLoginTool.QQtool import OAuthQQ
 from django.conf import settings
 from django import http
+import logging
 
 from meiduo_mall.utils.response_code import RETCODE
 # Create your views here.
+
+logger = logging.getLogger('django')
 
 
 class QQAuthUserView(View):
@@ -16,6 +19,20 @@ class QQAuthUserView(View):
         code = request.GET.get('code')
         if not code:
             return http.HttpResponseForbidden('缺少code')
+
+        #创建工具对象
+        oauth = OAuthQQ(client_id=settings.QQ_CLIENT_ID, client_secret=settings.QQ_CLIENT_SECRET,
+                        redirect_uri=settings.QQ_REDIRECT_URI)
+
+        try:
+            #通过Autherization Code获取Access Token
+            access_token = oauth.get_access_token(code)
+            #通过Access Token获取openid
+            openid = oauth.get_open_id(access_token)
+        except Exception as e:
+            logger.error(e)
+            return http.HttpResponseForbidden('OAuth2.0认证失败')
+
         pass
 
 
