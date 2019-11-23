@@ -21,4 +21,5 @@ urlpatterns = [
     url(r'^', include('users.urls', namespace='users')),  #users
     url(r'^', include('contents.urls', namespace='contents')),  #首页
     url(r'^', include('verifications.urls', namespace='verifications')),  #验证模块
+    url(r'^', include('oauth.urls', namespace='oauth')),  #第三方认证模块
 ]
