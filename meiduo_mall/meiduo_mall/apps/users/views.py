@@ -9,11 +9,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from users.models import User
 from meiduo_mall.utils.response_code import RETCODE
+from meiduo_mall.utils.views import LoginRequestJSONMixin
+from celery_tasks.email.tasks import send_verify_email
+from .utils import generate_verify_email_url
 # Create your views here.
 
 logger = logging.getLogger('django')
 
-class EmailView(View):
+
+class EmailView(LoginRequestJSONMixin, View):
     '''添加邮箱'''
     def put(self, request):
         """实现添加邮箱逻辑"""
@@ -32,10 +36,14 @@ class EmailView(View):
             request.user.save()
         except Exception as e:
             logger.error(e)
-            return http.JsonResponse({'code': RETCODE.EMAILERR, 'errmsg':'添加邮箱失败'})
+            return http.JsonResponse({'code': RETCODE.EMAILERR, 'errmsg': '添加邮箱失败'})
+
+        #异步发送验证邮件
+        verify_url = generate_verify_email_url(request.user)
+        send_verify_email.delay(email, verify_url)
 
         #响应添加邮箱结果
-        return http.JsonResponse({'code': RETCODE.OK, 'errmsg':'添加邮箱成功'})
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '添加邮箱成功'})
 
 
 class UserInfoView(LoginRequiredMixin, View):
