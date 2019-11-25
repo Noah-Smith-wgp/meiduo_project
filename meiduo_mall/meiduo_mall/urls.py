@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^', include('contents.urls', namespace='contents')),  #首页
     url(r'^', include('verifications.urls', namespace='verifications')),  #验证模块
     url(r'^', include('oauth.urls', namespace='oauth')),  #第三方认证模块
+    url(r'^', include('areas.urls')),  #省市区
 ]

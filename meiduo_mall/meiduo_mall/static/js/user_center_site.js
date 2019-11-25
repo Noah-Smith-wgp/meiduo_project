@@ -44,7 +44,7 @@ let vm = new Vue({
                 })
                     .then(response => {
                         if (response.data.code == '0') {
-                            this.cities = response.data.sub_data.subs;
+                            this.cities = response.data.sub_area.subs;
                         } else {
                             console.log(response.data);
                             this.cities = [];
@@ -65,7 +65,7 @@ let vm = new Vue({
                 })
                     .then(response => {
                         if (response.data.code == '0') {
-                            this.districts = response.data.sub_data.subs;
+                            this.districts = response.data.sub_area.subs;
                         } else {
                             console.log(response.data);
                             this.districts = [];
@@ -230,7 +230,7 @@ let vm = new Vue({
                             }
                         })
                         .catch(error => {
-                            console.log(error.response);
+                            alert(error.response);
                         })
                 }
             }

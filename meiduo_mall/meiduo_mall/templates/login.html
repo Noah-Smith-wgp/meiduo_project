@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="{{ static('css/main.css') }}">
 	<script type="text/javascript" src="{{ static('js/vue-2.5.16.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/axios-0.18.0.min.js') }}"></script>
+    <script src="//tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=2109446271" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 	<div class="login_top clearfix">
@@ -39,6 +40,7 @@
 				<div class="third_party">
 					<a @click="qq_login" class="qq_login">QQ</a>
 					<a href="#" class="weixin_login">微信</a>
+                    <wb:login-button type="6,4" onlogin="login" class="wb_login" onlogout="logout">登录按钮</wb:login-button>
 					<a href="{{ url('users:register') }}" class="register_btn">立即注册</a>
 				</div>
 			</div>
