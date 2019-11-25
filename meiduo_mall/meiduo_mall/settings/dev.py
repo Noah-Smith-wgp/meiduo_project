@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'contents', #首页广告
     'verifications', # 验证
     'oauth',  #第三方认证登录
+    'areas',  #省市区
 ]
 
 MIDDLEWARE = [
@@ -257,8 +258,8 @@ QQ_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 指定邮件后端
 EMAIL_HOST = 'smtp.163.com' # 发邮件主机
 EMAIL_PORT = 25 # 发邮件端口
-EMAIL_HOST_USER = 'hmmeiduo@163.com' # 授权的邮箱
-EMAIL_HOST_PASSWORD = 'hmmeiduo123' # 邮箱授权时获得的密码，非注册登录密码
+EMAIL_HOST_USER = '18211672297@163.com' # 授权的邮箱
+EMAIL_HOST_PASSWORD = 'wang134612a' # 邮箱授权时获得的密码，非注册登录密码
 EMAIL_FROM = '美多商城<hmmeiduo@163.com>' # 发件人抬头
 
 # 邮箱验证链接
