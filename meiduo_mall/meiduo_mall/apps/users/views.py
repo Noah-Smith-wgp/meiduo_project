@@ -7,12 +7,11 @@ from django_redis import get_redis_connection
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from users.models import User
+from users.models import User, Address
 from meiduo_mall.utils.response_code import RETCODE
 from meiduo_mall.utils.views import LoginRequestJSONMixin
 from celery_tasks.email.tasks import send_verify_email
-from .utils import generate_verify_email_url, check_verify_email_token
-from users.models import Address
+from users.utils import generate_verify_email_url, check_verify_email_token
 from users import constants
 # Create your views here.
 
@@ -25,7 +24,7 @@ class AddressCreateView(LoginRequestJSONMixin, View):
         """实现新增地址逻辑"""
         # 判断是否超过地址上限：最多20个
         # count = Address.objects.filter(user=request.user, is_deleted=False).count()
-        count = request.user.addresses.filter(is_delete=False).count()
+        count = request.user.addresses.filter(is_deleted=False).count()
         if count >= constants.USER_ADDRESS_COUNTS_LIMIT:
             return http.JsonResponse({'code': RETCODE.THROTTLINGERR, 'errmsg': '超过地址数量上限'})
 
@@ -57,7 +56,7 @@ class AddressCreateView(LoginRequestJSONMixin, View):
             address = Address.objects.create(
                 user = request.user,
                 title = receiver,
-                reveiver = receiver,
+                receiver = receiver,
                 # province = province, # 将省份模型对象赋值给province (province = Area.objects.get(id=province_id))
                 province_id=province_id,  # 省份ID赋值给外键
                 city_id=city_id,
@@ -97,7 +96,32 @@ class AddressView(LoginRequiredMixin, View):
     """用户收货地址"""
     def get(self, request):
         """提供收货地址页面"""
-        return render(request, 'user_center_site.html')
+        # 获取用户地址列表
+        # addresses = Address.objects.filter(user=request.user, is_deleted=False)
+        addresses = request.user.addresses.filter(is_deleted = False)
+
+        address_list = []
+        for address in addresses:
+            address_dict = {
+                "id": address.id,
+                "title": address.title,
+                "receiver": address.receiver,
+                "province": address.province.name,
+                "city": address.city.name,
+                "district": address.district.name,
+                "place": address.place,
+                "mobile": address.mobile,
+                "tel": address.tel,
+                "email": address.email
+            }
+            address_list.append(address_dict)
+
+        context = {
+            'default_address_id': request.user.default_address_id,
+            'addresses': address_list
+        }
+
+        return render(request, 'user_center_site.html', context)
 
 
 class VerifyEmailView(View):
