@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     #列表页
-    url(r'^list/$', views.ListView.as_view(), name='list'),
+    url(r'^list/(?P<category_id>\d+)/(?P<page_num>\d+)/$', views.ListView.as_view(), name='list'),
 ]

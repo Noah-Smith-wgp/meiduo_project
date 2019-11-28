@@ -16,8 +16,8 @@ class IndexView(View):
         contents = {}
         content_categories = ContentCategory.objects.all()
         for cat in content_categories:
-            # contents[cat.key] = cat.content_set.filter(status=True).order_by('sequence')
-            contents[cat.key] = Content.objects.filter(category=cat, status=True).order_by('sequence')
+            contents[cat.key] = cat.content_set.filter(status=True).order_by('sequence')
+            # contents[cat.key] = Content.objects.filter(category=cat, status=True).order_by('sequence')
         # 构造上下文
         context = {
             'categories': categories,
