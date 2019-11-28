@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from django.views import View
 from django import http
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 
 from contents.models import GoodsCategory
 from goods.models import SKU
-
+from contents.utils import get_categories
+from goods.utils import get_breadcrumb
 # Create your views here.
+
+
+
 
 
 class ListView(View):
@@ -18,7 +22,7 @@ class ListView(View):
 
         #校验参数
         try:
-            GoodsCategory.objects.get(id =category_id)
+            category3 = GoodsCategory.objects.get(id =category_id)
         except GoodsCategory.DoesNotExist:
             return http.HttpResponseForbidden('参数category_id有误')
 
@@ -36,18 +40,35 @@ class ListView(View):
         #创建分页器:对skus进行分页，每页5条记录
         paginator = Paginator(skus, 5)
         #查询指定页对应的数据
-        page_skus = paginator.page(page_num)
+        try:
+            page_skus = paginator.page(page_num)
+        except EmptyPage:
+            return render(request, '404.html')
         #总共分了多少页
         total_count = paginator.num_pages
-        #查询面包屑导航
+
         #查询商品分类
+        categories = get_categories()
+
+        # 查询面包屑导航
+        # cat2 = category3.parent
+        # cat1 = cat2.parent
+        # bread_crumb = {
+        #     'cat1': cat1,
+        #     'cat2': cat2,
+        #     'cat3': category3
+        # }
+        bread_crumb = get_breadcrumb(category3)
+
         #查询热销排行
         context = {
             'category_id': category_id,
             'sort': sort,
             'page_skus': page_skus,
             'page_num': page_num,
-            'total_count': total_count
+            'total_count': total_count,
+            'categories': categories,
+            'bread_crumb': bread_crumb
         }
 
         return render(request, 'list.html', context)
