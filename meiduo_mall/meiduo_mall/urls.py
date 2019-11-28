@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^', include('verifications.urls', namespace='verifications')),  #验证模块
     url(r'^', include('oauth.urls', namespace='oauth')),  #第三方认证模块
     url(r'^', include('areas.urls')),  #省市区
+    url(r'^', include('goods.urls', namespace='goods')), #商品模块
 ]
