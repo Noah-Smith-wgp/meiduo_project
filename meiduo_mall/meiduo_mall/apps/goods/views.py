@@ -11,6 +11,29 @@ from meiduo_mall.utils.response_code import RETCODE
 # Create your views here.
 
 
+class DetailView(View):
+    """商品详情页"""
+    def get(self, request, sku_id):
+        """提供商品详情页"""
+        try:
+            sku = SKU.objects.get(id = sku_id)
+        except SKU.DoesNotExist:
+            return render(request, '404.html')
+
+        #查询商品频道分类
+        categories = get_categories()
+        #查询面包屑导航
+        bread_crumb = get_breadcrumb(sku.category)
+
+        #构建上下文
+        context = {
+            'categories': categories,
+            'bread_crumb': bread_crumb,
+            'sku': sku,
+        }
+        return render(request, 'detail.html', context)
+
+
 class HotGoodsView(View):
     """商品热销排行"""
     def get(self, request, category_id):
