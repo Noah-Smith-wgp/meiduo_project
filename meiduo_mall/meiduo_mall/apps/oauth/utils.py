@@ -41,9 +41,9 @@ class OAuthWB(object):
 
         response = requests.post(access_url,data_dict)
         result = json.loads(response.decode())
-        access_token = result['access_token']
+        # wb_access_token = result['access_token']
         # uid = result['uid']
-        return access_token
+        return result
 
 
     def get_token_info(self, access_token):

@@ -23,9 +23,9 @@ class WBAuthUserView(View):
         code = request.POST.get('code')
         oauth_wb = OAuthWB(client_id=settings.WB_CLIENT_ID, client_secret=settings.WB_CLIENT_SECRET,
                            redirect_uri=settings.WB_REDIRECT_URI, state=next)
-        access_token = oauth_wb.get_wbaccess_token(code)
-        print(access_token)
-        return render(request, 'oauth_callback.html')
+        wb_access_token = oauth_wb.get_wbaccess_token(code)
+        print(wb_access_token)
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'result': wb_access_token})
 
 
 class WBAuthURLView(View):
