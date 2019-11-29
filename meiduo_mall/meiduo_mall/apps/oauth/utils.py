@@ -1,8 +1,62 @@
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from django.conf import settings
 from itsdangerous import BadData
+from urllib.parse import urlencode, parse_qs
+import json
+import requests
+
 
 from oauth import constants
+
+
+class OAuthWB(object):
+    """WB认证辅助工具类"""
+    def __init__(self, client_id=None, client_secret=None, redirect_uri=None, state=None):
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.redirect_uri = redirect_uri
+        self.state = state  # 用于保存登录成功后的跳转页面路径
+
+    def get_wb_url(self):
+        # WB登录url参数组建
+        data_dict = {
+            'response_type': 'code',
+            'client_id': self.client_id,
+            'redirect_uri': self.redirect_uri,
+            'state': self.state
+        }
+        wb_url = 'https://api.weibo.com/oauth2/authorize?' + urlencode(data_dict)
+        return wb_url
+
+    def get_wbaccess_token(self, code):
+        #构建参数数据
+        data_dict = {
+            'grant_type': 'authorization_code',
+            'client_id': self.client_id,
+            'client_secret': self.client_secret,
+            'redirect_uri': self.redirect_uri,
+            'code': code
+        }
+        access_url = 'https://api.weibo.com/oauth2/access_token'
+
+        response = requests.post(access_url,data_dict)
+        result = json.loads(response.decode())
+        access_token = result['access_token']
+        # uid = result['uid']
+        return access_token
+
+
+    def get_token_info(self, access_token):
+        info_url = 'https://api.weibo.com/oauth2/get_token_info'
+        response = requests.post(info_url, access_token)
+        result = json.loads(response.decode())
+        uid = result['uid']
+        return uid
+
+    def revokeoauth2(self, access_token):
+        url = 'https://api.weibo.com/oauth2/revokeoauth2?' + access_token
+        status = requests.get(url)
+        return status
 
 
 def generate_access_token_openid(openid):

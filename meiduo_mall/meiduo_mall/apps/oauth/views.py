@@ -10,11 +10,34 @@ from django.db import DatabaseError
 
 from meiduo_mall.utils.response_code import RETCODE
 from oauth.models import OAuthQQUser
-from oauth.utils import generate_access_token_openid, check_access_token_openid
+from oauth.utils import generate_access_token_openid, check_access_token_openid, OAuthWB
 from users.models import User
+
 # Create your views here.
 
 logger = logging.getLogger('django')
+
+
+class WBAuthUserView(View):
+    def post(self, request):
+        code = request.POST.get('code')
+        oauth_wb = OAuthWB(client_id=settings.WB_CLIENT_ID, client_secret=settings.WB_CLIENT_SECRET,
+                           redirect_uri=settings.WB_REDIRECT_URI, state=next)
+        access_token = oauth_wb.get_wbaccess_token(code)
+        print(access_token)
+        return render(request, 'oauth_callback.html')
+
+
+class WBAuthURLView(View):
+    def get(self, request):
+        next = request.GET.get('next', '/')
+
+        oauth_wb = OAuthWB(client_id=settings.WB_CLIENT_ID, client_secret=settings.WB_CLIENT_SECRET,
+                        redirect_uri=settings.WB_REDIRECT_URI, state=next)
+
+        login_url = oauth_wb.get_wb_url()
+        print(login_url)
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'login_url':login_url})
 
 
 class QQAuthUserView(View):

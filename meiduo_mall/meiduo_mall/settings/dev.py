@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'verifications', # 验证
     'oauth',  #第三方认证登录
     'areas',  #省市区
-    'goods',  #商品
+    'goods',  #商品模块
+    'haystack', # 全文检索
 ]
 
 MIDDLEWARE = [
@@ -255,6 +256,11 @@ QQ_CLIENT_ID = '101518219'
 QQ_CLIENT_SECRET = '418d84ebdc7241efb79536886ae95224'
 QQ_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback'
 
+#WB登录参数
+WB_CLIENT_ID = '2109446271'
+WB_CLIENT_SECRET = 'c2d958f5be19eb6a02063a6867161a28'
+WB_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback'
+
 # 配置发邮件服务器
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 指定邮件后端
 EMAIL_HOST = 'smtp.163.com' # 发邮件主机
@@ -271,3 +277,15 @@ DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
 
 # 存储服务器位置
 FDFS_BASE_URL = 'http://192.168.24.129:8888/'
+
+# Haystack
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://122.51.161.120:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
+        'INDEX_NAME': 'meiduo_mall', # Elasticsearch建立的索引库的名称
+    },
+}
+
+# 当添加、修改、删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'

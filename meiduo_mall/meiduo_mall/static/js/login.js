@@ -52,6 +52,20 @@ let vm = new Vue({
                 .catch(error => {
                     console.log(error.response);
                 })
+        },
+        // wb登录
+        wb_login(){
+            let next = get_query_string('next') || '/';
+            let url = '/wb/login/?next=' + next;
+            axios.get(url, {
+                responseType: 'json'
+            })
+                .then(response => {
+                    location.href = response.data.login_url;
+                })
+                .catch(error => {
+                    console.log(error.response);
+                })
         }
     }
 });
