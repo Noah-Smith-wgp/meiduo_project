@@ -6,7 +6,7 @@ from django.core.paginator import Paginator, EmptyPage
 from contents.models import GoodsCategory
 from goods.models import SKU
 from contents.utils import get_categories
-from goods.utils import get_breadcrumb
+from goods.utils import get_breadcrumb, get_goods_specs
 from meiduo_mall.utils.response_code import RETCODE
 # Create your views here.
 
@@ -25,11 +25,15 @@ class DetailView(View):
         #查询面包屑导航
         bread_crumb = get_breadcrumb(sku.category)
 
+        #构建当前商品的规格
+        goods_specs = get_goods_specs(sku)
+
         #构建上下文
         context = {
             'categories': categories,
             'bread_crumb': bread_crumb,
             'sku': sku,
+            'specs': goods_specs
         }
         return render(request, 'detail.html', context)
 

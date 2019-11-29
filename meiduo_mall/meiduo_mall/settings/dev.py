@@ -259,7 +259,7 @@ QQ_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback'
 #WB登录参数
 WB_CLIENT_ID = '2109446271'
 WB_CLIENT_SECRET = 'c2d958f5be19eb6a02063a6867161a28'
-WB_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback'
+WB_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback2'
 
 # 配置发邮件服务器
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 指定邮件后端

@@ -10,5 +10,5 @@ urlpatterns = [
     #WB登录授权连接
     url(r'^wb/login/$', views.WBAuthURLView.as_view(), name='wb/login'),
     #WB登录回调处理
-    # url(r'^oauth_callback/$', views.WBAuthUserView.as_view(), name='oauth_callback2'),
+    url(r'^oauth_callback2/$', views.WBAuthUserView.as_view(), name='oauth_callback2'),
 ]

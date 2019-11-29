@@ -127,22 +127,20 @@
                     <a @click="on_minus" class="minus fr">-</a>
 				</div> 
 			</div>
-			<div class="type_select">
-				<label>屏幕尺寸:</label>
-				<a href="javascript:;" class="select">13.3英寸</a>
-				<a href="javascript:;">15.4英寸</a>
-			</div>
-			<div class="type_select">
-				<label>颜色:</label>
-				<a href="javascript:;" class="select">深灰色</a>
-				<a href="javascript:;">银</a>
-			</div>
-			<div class="type_select">
-				<label>版本:</label>
-				<a href="javascript:;" class="select">core i5/8G内存/256G存储</a>
-				<a href="javascript:;">core i5/8G内存/128G存储</a>
-				<a href="javascript:;">core i5/8G内存/512G存储/Multi-Touch Bar</a>
-			</div>
+			{% for spec in specs %}
+            <div class="type_select">
+                <label>{{ spec.name }}:</label>
+                {% for option in spec.spec_options %}
+                    {% if option.sku_id == sku.id %}
+                    <a href="javascript:;" class="select">{{ option.value }}</a>
+                    {% elif option.sku_id %}
+                    <a href="{{ url('goods:detail', args=(option.sku_id, )) }}">{{ option.value }}</a>
+                    {% else %}
+                    <a href="javascript:;">{{ option.value }}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endfor %}
 			<div class="total" v-cloak>总价：<em>[[ sku_amount ]]元</em></div>
 			<div class="operate_btn">
 				<a @click="add_carts" class="add_cart" id="add_cart">加入购物车</a>
@@ -172,19 +170,19 @@
 			<div @click="on_tab_content('detail')" class="tab_content" :class="tab_content.detail?'current':''">
 				<dl>
 					<dt>商品详情：</dt>
-					<dd>{{ sku.spu.desc_detail|safe }}</dd>
+					<dd>{{ sku.spu.desc_detail | safe }}</dd>
 				</dl>
 			</div>
 			<div @click="on_tab_content('pack')" class="tab_content" :class="tab_content.pack?'current':''">
 				<dl>
 					<dt>规格与包装：</dt>
-					<dd>{{ sku.spu.desc_pack|safe }}</dd>
+					<dd>{{ sku.spu.desc_pack | safe }}</dd>
 				</dl>
 			</div>
 			<div @click="on_tab_content('service')" class="tab_content" :class="tab_content.service?'current':''">
 				<dl>
 					<dt>售后服务：</dt>
-					<dd>{{ sku.spu.desc_service|safe }}</dd>
+					<dd>{{ sku.spu.desc_service |safe }}</dd>
 				</dl>
 			</div>
             <div @click="on_tab_content('comment')" class="tab_content" :class="tab_content.comment?'current':''">
