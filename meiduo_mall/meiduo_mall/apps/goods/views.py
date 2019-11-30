@@ -1,14 +1,57 @@
 from django.shortcuts import render
+from django.utils import timezone
 from django.views import View
 from django import http
 from django.core.paginator import Paginator, EmptyPage
+from django.db import DatabaseError
 
 from contents.models import GoodsCategory
-from goods.models import SKU
+from goods.models import SKU, GoodsVisitCount
 from contents.utils import get_categories
 from goods.utils import get_breadcrumb, get_goods_specs
 from meiduo_mall.utils.response_code import RETCODE
 # Create your views here.
+
+
+class DetailVisitView(View):
+    """统计分类商品的访问量"""
+
+    def post(self, request, category_id):
+        """
+        实现统计分类商品的访问量逻辑
+        :param category_id: 要统计的商品的分类
+        :return: JSON
+        """
+        # 校验category_id
+        try:
+            category = GoodsCategory.objects.get(id=category_id)
+        except GoodsCategory.DoesNotExist:
+            return http.HttpResponseForbidden('缺少必传参数')
+
+        # 获取当天的日期:t 对应的是时间对象DateTime 2019-11-29
+        t = timezone.localtime()
+        # 拼接时间字符串
+        today_str = '%d-%02d-%02d' % (t.year, t.month, t.day)
+        # 将时间字符串转时间对象 strptime : 将时间字符串转成时间对象。strftime ：时间对象转时间字符串
+        today_date = timezone.datetime.strptime(today_str, '%Y-%m-%d')
+
+        # 判断当天category_id对应的访问记录是否存在
+        try:
+            goods_count = GoodsVisitCount.objects.get(category=category, date=today_date)
+        except GoodsVisitCount.DoesNotExist:
+            # 如果不存在：新建记录，并保存本次访问量
+            goods_count = GoodsVisitCount()
+
+        # 如果已存在或者新建了记录，直接累加本次访问量
+        try:
+            goods_count.category_id = category_id
+            goods_count.date = today_date
+            goods_count.count += 1
+            goods_count.save()
+        except DatabaseError:
+            return http.HttpResponseServerError('统计失败')
+
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK'})
 
 
 class DetailView(View):
