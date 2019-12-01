@@ -74,8 +74,48 @@ class CartsView(View):
 
     def get(self, request):
         """展示购物车"""
-        return render(request, 'cart.html')
-        pass
+        user = request.user
+        if user.is_authenticated:
+            #用户已登录，查询redis购物车
+            redis_conn = get_redis_connection('carts')
+
+            redis_cart = redis_conn.hgetall('carts_%s' % user.id)
+            redis_selected = redis_conn.smembers('selected_%s' % user.id)
+
+            #将redis购物车数据转存到字典
+            cart_dict = {}
+            for sku_id,count in redis_cart.items():
+                cart_dict[int(sku_id)] = {
+                    'count': int(count),
+                    'selected': sku_id in redis_selected
+                }
+        else:
+            #用户未登录，查询cookies购物车
+            cart_str = request.COOKIES.get('carts')
+            if cart_str:
+                cart_dict = pickle.loads(base64.b64decode(cart_str.encode()))
+            else:
+                cart_dict = {}
+        sku_ids = cart_dict.keys()
+        skus = SKU.objects.filter(id__in=sku_ids)
+        cart_skus = []
+        for sku in skus:
+            sku_dict = {
+                'id': sku.id,
+                'name': sku.name,
+                'price': str(sku.price),  # 从Decimal('10.2')中取出'10.2'，方便json解析
+                'default_image_url': sku.default_image.url,
+                'count': cart_dict[sku.id]['count'],
+                'selected': str(cart_dict[sku.id]['selected']),
+                'amount': str(sku.price * cart_dict[sku.id]['count'])
+            }
+            cart_skus.append(sku_dict)
+
+        context = {
+            'cart_skus': cart_skus
+        }
+
+        return render(request, 'cart.html', context)
 
     def put(self, request):
         """修改购物车"""
