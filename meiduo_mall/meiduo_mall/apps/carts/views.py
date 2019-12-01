@@ -160,7 +160,32 @@ class CartsView(View):
             }
             return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '修改购物车成功', 'cart_sku':cart_sku})
         else:
-            pass
+            cart_str = request.COOKIES.get('carts')
+            if cart_str:
+                cart_dict = pickle.loads(base64.b64decode(cart_str.encode()))
+            else:
+                cart_dict = {}
+
+            cart_dict[sku_id] = {
+                "count": count,
+                "selected": selected
+            }
+
+            cookie_cart_str = base64.b64encode(pickle.dumps(cart_dict)).decode()
+
+            cart_sku = {
+                'id': sku_id,
+                'name': sku.name,
+                'price': sku.price,
+                'default_image_url': sku.default_image.url,
+                'count': count,
+                'selected': selected,
+                'amount': sku.price * count
+            }
+
+            response = http.JsonResponse({'code': RETCODE.OK, 'errmsg': '修改购物车成功', 'cart_sku': cart_sku})
+            response.set_cookie('carts', cookie_cart_str)
+            return response
 
     def delete(self, request):
         """删除购物车"""
