@@ -189,4 +189,30 @@ class CartsView(View):
 
     def delete(self, request):
         """删除购物车"""
-        pass
+        json_dict = json.loads(request.body.decode())
+        sku_id = json_dict.get('sku_id')
+
+        try:
+            SKU.objects.get(id = sku_id)
+        except SKU.DoesNotExist:
+            return http.HttpResponseForbidden('参数sku_id错误')
+
+        user = request.user
+        if user.is_authenticated:
+            redis_conn = get_redis_connection('carts')
+            redis_conn.hdel('carts_%s' % user.id, sku_id)
+            redis_conn.srem('selected_%s' % user.id, sku_id)
+            return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '删除购物车成功'})
+        else:
+            cart_str = request.COOKIES.get('carts')
+
+            response = http.JsonResponse({'code': RETCODE.OK, 'errmsg': '删除购物车成功'})
+            if cart_str:
+                cart_dict = pickle.loads(base64.b64decode(cart_str.encode()))
+                if sku_id in cart_dict:
+                    del cart_dict[sku_id]
+
+                cookie_cart_str = base64.b64encode(pickle.dumps(cart_dict)).decode()
+                response.set_cookie('carts', cookie_cart_str)
+
+            return response
