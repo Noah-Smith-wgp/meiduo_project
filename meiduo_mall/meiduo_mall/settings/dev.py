@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'areas',  #省市区
     'goods',  #商品模块
     'haystack', # 全文检索
+    'carts',  #购物车
 ]
 
 MIDDLEWARE = [
@@ -296,7 +297,7 @@ FDFS_BASE_URL = 'http://122.51.161.120:8888/'
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://122.51.161.120:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
+        'URL': 'http://49.232.164.126:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
         'INDEX_NAME': 'meiduo_mall', # Elasticsearch建立的索引库的名称
     },
 }
