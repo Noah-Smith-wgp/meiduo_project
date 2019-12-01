@@ -10,6 +10,14 @@ from meiduo_mall.utils.response_code import RETCODE
 # Create your views here.
 
 
+class CartsSelectAllView(View):
+    """购物车全选"""
+
+    def put(self, request):
+        """实现购物车全选"""
+        pass
+
+
 class CartsView(View):
     """购物车管理"""
 
