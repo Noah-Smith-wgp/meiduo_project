@@ -11,6 +11,7 @@ class FastDFSStorage(Storage):
         :param base_url: 存储服务器的位置
         """
         self.fdfs_base_url = fdfs_base_url or settings.FDFS_BASE_URL
+        # self.fdfs_base_url = settings.FDFS_BASE_URL
 
     def _open(self, name, mode='rb'):
         """

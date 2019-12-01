@@ -149,6 +149,20 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    "history": { # 用户浏览记录
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://122.51.161.120:6379/3",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    "carts": { # 购物车
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://122.51.161.120:6379/4",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
 }
 #指定session数据存储引擎和位置
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -193,7 +207,7 @@ LOGGING = {
             'propagate': True,  # 是否继续传递日志信息
             'level': 'INFO',  # 日志器接收的最低日志级别
         },
-    }
+    },
 }
 
 
@@ -276,13 +290,13 @@ EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
 DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
 
 # 存储服务器位置
-FDFS_BASE_URL = 'http://49.232.164.126:8888/'
+FDFS_BASE_URL = 'http://122.51.161.120:8888/'
 
 # Haystack
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://49.232.164.126:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
+        'URL': 'http://122.51.161.120:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
         'INDEX_NAME': 'meiduo_mall', # Elasticsearch建立的索引库的名称
     },
 }

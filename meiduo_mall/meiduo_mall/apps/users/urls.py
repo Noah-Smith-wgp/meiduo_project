@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^addresses/$', views.AddressView.as_view(), name='address'),
     #新增地址
     url(r'^addresses/create/$', views.AddressCreateView.as_view()),
-
-
+    #用户浏览记录
+    url(r'^browse_histories/$', views.UserBrowseHistory.as_view()),
 
 ]

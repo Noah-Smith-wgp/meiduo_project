@@ -9,16 +9,71 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from users.models import User, Address
 from meiduo_mall.utils.response_code import RETCODE
-from meiduo_mall.utils.views import LoginRequestJSONMixin
+from meiduo_mall.utils.views import LoginRequiredJSONMixin
 from celery_tasks.email.tasks import send_verify_email
 from users.utils import generate_verify_email_url, check_verify_email_token
 from users import constants
+from goods.models import SKU
 # Create your views here.
 
 logger = logging.getLogger('django')
 
 
-class AddressCreateView(LoginRequestJSONMixin, View):
+class UserBrowseHistory(LoginRequiredJSONMixin, View):
+    """用户浏览记录"""
+    def post(self, request):
+        """保存用户浏览记录"""
+        #接收参数：sku_id
+        json_dict = json.loads(request.body.decode())
+        sku_id = json_dict.get('sku_id')
+
+        #校验参数
+        try:
+            SKU.objects.get(id = sku_id)
+        except SKU.DoesNotExist:
+            return http.HttpResponseBadRequest('参数sku_id错误')
+
+        #创建连接到redis的对象
+        redis_conn = get_redis_connection('history')
+        pl = redis_conn.pipeline()
+
+        user_id = request.user.id
+        #先去重
+        # redis_conn.lrem('key', 0, '要添加的元素')
+        pl.lrem('history_%s' % user_id, 0, sku_id)
+        #再添加
+        # redis_conn.lpush('key', '要添加的元素')
+        pl.lpush('history_%s' % user_id, sku_id)
+        #最后截取：截取最前面五个元素[0,1,2,3,4]
+        # redis_conn.ltrim('key', '开始的角标', '结束的角标')
+        pl.ltrim('history_%s' % user_id, 0, 4)
+        pl.execute()
+
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK'})
+
+    def get(self, request):
+        """查询用户浏览记录"""
+        # 创建连接到redis的对象
+        user_id = request.user.id
+        redis_conn = get_redis_connection('history')
+
+        sku_ids = redis_conn.lrange('history_%s' % user_id, 0, -1)
+
+        skus = []
+        for sku_id in sku_ids:
+            sku = SKU.objects.get(id = sku_id)
+            sku_dict = {
+                'id': sku.id,
+                'name': sku.name,
+                'price': sku.price,
+                'default_image_url': sku.default_image.url
+            }
+            skus.append(sku_dict)
+
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'skus': skus})
+
+
+class AddressCreateView(LoginRequiredJSONMixin, View):
     """新增地址"""
     def post(self, request):
         """实现新增地址逻辑"""
@@ -151,7 +206,7 @@ class VerifyEmailView(View):
         return redirect(reverse('users:info'))
 
 
-class EmailView(LoginRequestJSONMixin, View):
+class EmailView(LoginRequiredJSONMixin, View):
     '''添加邮箱'''
     def put(self, request):
         """实现添加邮箱逻辑"""
