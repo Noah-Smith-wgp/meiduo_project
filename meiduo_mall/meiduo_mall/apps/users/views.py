@@ -14,6 +14,7 @@ from celery_tasks.email.tasks import send_verify_email
 from users.utils import generate_verify_email_url, check_verify_email_token
 from users import constants
 from goods.models import SKU
+from carts.utils import merge_cart_cookie_to_redis
 # Create your views here.
 
 logger = logging.getLogger('django')
@@ -324,6 +325,9 @@ class LoginView(View):
         # 将用户名写入到cookie
         # response.set_cookie('key', 'value', '过期时间')
         response.set_cookie('username', user.username, expires=3600 * 24 * 14)
+
+        #登录成功后，合并购物车
+        response = merge_cart_cookie_to_redis(request=request, user=user, response=response)
 
         #响应结果
         return response
