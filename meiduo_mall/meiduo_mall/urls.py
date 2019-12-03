@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^', include('areas.urls')),  #省市区
     url(r'^', include('goods.urls', namespace='goods')), #商品模块
     url(r'^', include('carts.urls', namespace='carts')),  #购物车
+    url(r'^', include('orders.urls', namespace='orders')),  #订单
 ]
