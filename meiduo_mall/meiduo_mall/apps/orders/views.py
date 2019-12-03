@@ -16,6 +16,23 @@ from meiduo_mall.utils.response_code import RETCODE
 # Create your views here.
 
 
+class OrderSuccessView(LoginRequiredMixin, View):
+    """提交订单成功"""
+
+    def get(self, request):
+        """提供提交订单成功页面"""
+        order_id = request.GET.get('order_id')
+        payment_amount = request.GET.get('payment_amount')
+        pay_method = request.GET.get('pay_method')
+
+        context = {
+            'order_id': order_id,
+            'payment_amount': payment_amount,
+            'pay_method': pay_method
+        }
+        return render(request, 'order_success.html', context)
+
+
 class OrderCommitView(LoginRequiredJSONMixin, View):
     """订单提交"""
 
@@ -58,7 +75,7 @@ class OrderCommitView(LoginRequiredJSONMixin, View):
 
                 redis_conn = get_redis_connection('carts')
                 redis_cart = redis_conn.hgetall('carts_%s' % request.user.id)
-                redis_selected = redis_conn.smemebers('selected_%s' % request.user.id)
+                redis_selected = redis_conn.smembers('selected_%s' % request.user.id)
                 new_cart_dict = {}
                 for sku_id in redis_selected:
                     new_cart_dict[int(sku_id)] = int(redis_cart[sku_id])
