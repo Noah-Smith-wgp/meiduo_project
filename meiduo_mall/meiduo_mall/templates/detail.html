@@ -144,6 +144,31 @@
 			<div class="total" v-cloak>总价：<em>[[ sku_amount ]]元</em></div>
 			<div class="operate_btn">
 				<a @click="add_carts" class="add_cart" id="add_cart">加入购物车</a>
+                <!--MOB SHARE BEGIN-->
+                <button class="-mob-share-weibo">分享到新浪微博</button>
+                <script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=2d09cae465657"></script>
+                <script>
+                mobShare.config( {
+                    appkey: '2d09cae465657', // appkey
+                    params: {
+                        url: 'http://www.meiduo.site:8000{{ url('goods:detail', args=(sku.id,)) }}', // 分享链接
+                        title: '美多商城商品详情页', // 分享标题
+                        description: '逛优秀的店，买最好的商品！', // 分享内容
+                        {#pic: 'http://www.meiduo.site:8000{{ static('images/cat.jpg') }}' , // 分享图片，使用逗号,隔开#}
+                    }
+                } );
+                </script>
+                <script>
+                    // 实例一个新浪微博的分享对象
+                    var weibo = mobShare( 'weibo' );
+
+                    // 然后通过用户事件触发分享（浏览器限制原因，打开新窗口必需通过用户事件触发）
+                    // 原生js的使用方法
+                    document.getElementById( 'share_weibo' ).onclick = function() {
+                        weibo.send();
+                    };
+                </script>
+                <!--MOB SHARE END-->
 			</div>
 		</div>
 	</div>

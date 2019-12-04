@@ -9,7 +9,6 @@
 	<script type="text/javascript" src="{{ static('js/vue-2.5.16.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/axios-0.18.0.min.js') }}"></script>
     <script id="-mob-share" src="http://f1.webshare.mob.com/code/mob-share.js?appkey=2d09cae465657"></script>
-
 </head>
 <body>
 	<div id="app">
@@ -36,9 +35,7 @@
 					<a href="{{ url('orders:info', args=(1, )) }}">我的订单</a>
                     <!--MOB SHARE BEGIN-->
                     <span>|</span>
-{#                    <div>#}
                     <a href="#" class="-mob-share-open">分享</a>
-{#                    </div>#}
                     <div class="-mob-share-ui -mob-share-ui-theme -mob-share-ui-theme-slide-right" style="display: none">
                         <ul class="-mob-share-list">
                             <li class="-mob-share-weibo"><p>新浪微博</p></li>
@@ -51,15 +48,12 @@
                     <div class="-mob-share-ui-bg"></div>
                     <script>
                     mobShare.config( {
-
                         appkey: '2d09cae465657', // appkey
-
                         params: {
                             url: 'http://www.meiduo.site:8000', // 分享链接
                             {#title: '美多商城首页', // 分享标题#}
                             description: '美多商城，商品美、种类多，欢迎光临！', // 分享内容
                         }
-
                     } );
                     </script>
                     <!--MOB SHARE END-->
