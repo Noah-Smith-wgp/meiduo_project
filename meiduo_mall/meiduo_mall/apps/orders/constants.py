@@ -1,0 +1,2 @@
+# 我的订单分页
+ORDERS_LIST_LIMIT = 2

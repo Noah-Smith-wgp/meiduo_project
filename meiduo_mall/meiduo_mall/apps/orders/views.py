@@ -15,6 +15,7 @@ from goods.models import SKU
 from users.models import Address
 from orders.models import OrderInfo, OrderGoods
 from meiduo_mall.utils.response_code import RETCODE
+from orders import constants
 # Create your views here.
 
 
@@ -38,7 +39,7 @@ class UserOrderInfoView(LoginRequiredMixin, View):
 
         page_num = int(page_num)
         try:
-            paginator = Paginator(orders, 5)
+            paginator = Paginator(orders, constants.ORDERS_LIST_LIMIT)
             page_orders = paginator.page(page_num)
             total_page = paginator.num_pages
         except EmptyPage:
