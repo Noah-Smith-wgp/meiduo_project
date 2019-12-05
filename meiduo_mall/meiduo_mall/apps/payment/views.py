@@ -8,7 +8,47 @@ import os
 from meiduo_mall.utils.views import LoginRequiredJSONMixin
 from orders.models import OrderInfo
 from meiduo_mall.utils.response_code import RETCODE
+from payment.models import Payment
 # Create your views here.
+
+
+class PaymentStatusView(View):
+    """保存订单支付结果"""
+
+    def get(self, request):
+        # 获取前端传入的请求参数
+        query_dict = request.GET
+        data = query_dict.dict()
+        signature = data.pop('sign')
+
+        # 初始化对接支付宝的SDK实例
+        alipay = AliPay(
+            appid=settings.ALIPAY_APPID,
+            app_notify_url=None,
+            app_private_key_string=open(
+                os.path.join(os.path.dirname(os.path.abspath(__file__)), 'keys/app_private_key.pem')).read(),
+            alipay_public_key_string=open(
+                os.path.join(os.path.dirname(os.path.abspath(__file__)), 'keys/alipay_public_key.pem')).read(),
+            sign_type='RSA2',
+            debug=settings.ALIPAY_DEBUG
+        )
+
+        result = alipay.verify(data, signature)
+        if result:
+            order_id = data.get('out_trade_no')
+            trade_id = data.get('trade_no')
+
+            Payment.objects.create(
+                order_id = order_id,
+                trade_id = trade_id
+            )
+            OrderInfo.objects.filter(order_id = order_id, status = OrderInfo.ORDER_STATUS_ENUM['UNPAID']).update(
+                status = OrderInfo.ORDER_STATUS_ENUM['UNCOMMENT'])
+
+            context = {'trade_id': trade_id}
+            return render(request, 'pay_success.html', context)
+        else:
+            return http.HttpResponseBadRequest('非法请求')
 
 
 class PaymentView(LoginRequiredJSONMixin, View):
@@ -21,9 +61,6 @@ class PaymentView(LoginRequiredJSONMixin, View):
             order = OrderInfo.objects.get(order_id=order_id, user=user, status = OrderInfo.ORDER_STATUS_ENUM['UNPAID'])
         except OrderInfo.DoesNotExist:
             return http.HttpResponseForbidden('订单信息错误')
-
-        # app_private_key_string = open("/path/to/your/private/key.pem").read()
-        # alipay_public_key_string = open("/path/to/alipay/public/key.pem").read()
 
         #初始化对接支付宝的SDK实例
         alipay = AliPay(
