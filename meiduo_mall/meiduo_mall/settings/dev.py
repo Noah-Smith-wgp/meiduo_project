@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'haystack', # 全文检索
     'carts',  #购物车
     'orders',  #订单
+    'payment',   #支付宝
 ]
 
 MIDDLEWARE = [
