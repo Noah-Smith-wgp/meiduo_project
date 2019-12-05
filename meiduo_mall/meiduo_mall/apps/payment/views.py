@@ -5,11 +5,52 @@ from alipay import AliPay
 from django.conf import settings
 import os
 
-from meiduo_mall.utils.views import LoginRequiredJSONMixin
-from orders.models import OrderInfo
+from meiduo_mall.utils.views import LoginRequiredJSONMixin, LoginRequiredMixin
+from orders.models import OrderInfo, OrderGoods
 from meiduo_mall.utils.response_code import RETCODE
 from payment.models import Payment
 # Create your views here.
+
+
+class OrderCommentView(LoginRequiredMixin, View):
+    """订单商品评价"""
+
+    def get(self, request):
+        """展示商品评价页面"""
+        #接收参数
+        order_id = request.GET.get('order_id')
+        #校验参数
+        try:
+            OrderInfo.objects.get(order_id = order_id, user = request.user)
+        except OrderInfo.DoesNotExist:
+            return http.HttpResponseNotFound('订单不存在')
+
+        #查询订单中未被评价的商品信息
+
+        try:
+            uncomment_goods = OrderGoods.objects.filter(order_id=order_id, is_commented=False)
+        except Exception:
+            return http.HttpResponseServerError('订单商品信息出错')
+
+        #构造待评价商品数据
+        uncomment_goods_list = []
+        for goods in uncomment_goods:
+            uncomment_goods_list.append({
+                'order_id': goods.order.order_id,
+                'sku_id': goods.sku_id,
+                'name': goods.sku.name,
+                'price': str(goods.price),
+                'default_image_url': goods.sku.default_image.url,
+                'comment': goods.comment,
+                'score': goods.score,
+                'is_anonymous': str(goods.is_anonymous),
+            })
+
+            #渲染模板
+            context = {
+                'uncomment_goods_list': uncomment_goods_list
+            }
+            return render(request, 'goods_judge.html', context)
 
 
 class PaymentStatusView(View):
