@@ -47,11 +47,11 @@ class OrderCommentView(LoginRequiredMixin, View):
                 'is_anonymous': str(goods.is_anonymous),
             })
 
-            #渲染模板
-            context = {
-                'uncomment_goods_list': uncomment_goods_list
-            }
-            return render(request, 'goods_judge.html', context)
+        #渲染模板
+        context = {
+            'uncomment_goods_list': uncomment_goods_list
+        }
+        return render(request, 'goods_judge.html', context)
 
     def post(self, request):
         """评价订单商品"""

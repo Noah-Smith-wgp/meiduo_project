@@ -168,6 +168,13 @@ class OrderCommitView(LoginRequiredJSONMixin, View):
                 return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '提交订单失败'})
             transaction.savepoint_commit(save_id)
 
+        #清除购物车中已结算的商品
+        pl = redis_conn.pipeline()
+        pl.hdel('carts_%s' % user.id, *redis_selected)
+        pl.srem('selected_%s' % user.id, *redis_selected)
+        pl.execute()
+
+        #响应提交订单结果
         return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'order_id': order_id})
 
 

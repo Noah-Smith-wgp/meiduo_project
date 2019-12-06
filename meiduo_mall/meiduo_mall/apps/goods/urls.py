@@ -11,4 +11,6 @@ urlpatterns = [
     url(r'^detail/(?P<sku_id>\d+)/$', views.DetailView.as_view(), name='detail'),
     #统计分类商品访问量
     url(r'^detail/visit/(?P<category_id>\d+)/$', views.DetailVisitView.as_view()),
+    #详情页展示评价信息
+    url(r'^comments/(?P<sku_id>\d+)/$', views.GoodsCommentView.as_view()),
 ]

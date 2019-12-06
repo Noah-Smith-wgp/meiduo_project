@@ -133,35 +133,35 @@ DATABASES = {
 CACHES = {
     "default": { # 默认
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://49.232.164.126:6379/0",
+        "LOCATION": "redis://122.51.161.120:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "session": { # session
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://49.232.164.126:6379/1",
+        "LOCATION": "redis://122.51.161.120:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "verify_code": { # 验证码
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://49.232.164.126:6379/2",
+        "LOCATION": "redis://122.51.161.120:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "history": { # 用户浏览记录
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://49.232.164.126:6379/3",
+        "LOCATION": "redis://122.51.161.120:6379/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "carts": { # 购物车
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://49.232.164.126:6379/4",
+        "LOCATION": "redis://122.51.161.120:6379/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -299,13 +299,13 @@ FDFS_BASE_URL = 'http://122.51.161.120:8888/'
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://192.168.44.132:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
+        'URL': 'http://122.51.161.120:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
         'INDEX_NAME': 'meiduo_mall', # Elasticsearch建立的索引库的名称
     },
 }
 
 # 当添加、修改、删除数据时，自动生成索引
-HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+# HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 #支付宝SDK配置参数
 ALIPAY_APPID = '2016101600696468'
