@@ -24,5 +24,7 @@ urlpatterns = [
     url(r'^addresses/create/$', views.AddressCreateView.as_view()),
     #用户浏览记录
     url(r'^browse_histories/$', views.UserBrowseHistory.as_view()),
+    #修改地址
+    url(r'^addresses/(?P<address_id>\d+)/$', views.AddressCreateView.as_view()),
 
 ]
