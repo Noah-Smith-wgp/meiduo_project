@@ -20,6 +20,27 @@ from carts.utils import merge_cart_cookie_to_redis
 logger = logging.getLogger('django')
 
 
+class AddressTitleView(LoginRequiredJSONMixin, View):
+    """修改地址标题"""
+
+    def put(self, request, address_id):
+        """修改地址标题"""
+        #接收参数
+        json_dict = json.loads(request.body.decode())
+        title = json_dict.get('title')
+
+        try:
+            address = Address.objects.get(id = address_id)
+
+            address.title = title
+            address.save()
+        except Address.DoesNotExist:
+            return http.JsonResponse({'code': RETCODE.DBERR, 'errmsg': '修改地址标题失败'})
+
+        #响应结果
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '修改地址标题成功'})
+
+
 class AddressDefaultView(LoginRequiredJSONMixin, View):
     """设置默认地址"""
 
