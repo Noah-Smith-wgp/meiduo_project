@@ -123,13 +123,21 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 # }
 
 DATABASES = {
-    'default': {
+    'default': {  # 写（主机）
         'ENGINE': 'django.db.backends.mysql', # 数据库引擎
         'HOST': '122.51.161.120', # 数据库主机
         'PORT': 3306, # 数据库端口
         'USER': 'python', # 数据库用户名
         'PASSWORD': 'mysql', # 数据库用户密码
         'NAME': 'meiduo_mall' # 数据库名字
+    },
+    'slave': { # 读（从机）
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': '122.51.161.120',
+        'PORT': 8306,
+        'USER': 'root',
+        'PASSWORD': 'mysql',
+        'NAME': 'meiduo_mall'
     },
 }
 
@@ -325,3 +333,7 @@ CRONJOBS = [
     ('*/1 * * * *', 'contents.crons.generate_static_index_html', '>> ' + os.path.join(os.path.dirname(BASE_DIR), 'logs/crontab.log'))
 ]
 CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
+
+
+#配置数据库读写路由
+DATABASE_ROUTERS = ['meiduo_mall.utils.db_router.MasterSlaveDBRouter']
