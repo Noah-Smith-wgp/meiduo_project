@@ -59,7 +59,7 @@ class AddressDefaultView(LoginRequiredJSONMixin, View):
         return http.JsonResponse({'code': RETCODE.OK, 'errmsg': '设置默认地址成功'})
 
 
-class AddressUpdateDestoryView(LoginRequiredJSONMixin, View):
+class AddressUpdateDestroyView(LoginRequiredJSONMixin, View):
     """修改和删除地址"""
     def put(self, request, address_id):
         """修改地址"""

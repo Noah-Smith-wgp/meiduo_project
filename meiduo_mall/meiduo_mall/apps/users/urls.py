@@ -25,7 +25,7 @@ urlpatterns = [
     #用户浏览记录
     url(r'^browse_histories/$', views.UserBrowseHistory.as_view()),
     #修改地址
-    url(r'^addresses/(?P<address_id>\d+)/$', views.AddressCreateView.as_view()),
+    url(r'^addresses/(?P<address_id>\d+)/$', views.AddressUpdateDestroyView.as_view()),
     #设置默认地址
     url(r'^addresses/(?P<address_id>\d+)/default/$', views.AddressDefaultView.as_view()),
     #修改地址标题
