@@ -20,6 +20,48 @@ from carts.utils import merge_cart_cookie_to_redis
 logger = logging.getLogger('django')
 
 
+class PasswordChangeView(LoginRequiredMixin, View):
+    """修改密码"""
+
+    def get(self, request):
+        """展示修改密码页面"""
+        return render(request, 'user_center_pass.html')
+
+    def post(self, request):
+        """实现修改密码后端逻辑"""
+
+        #接收参数
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        new_password2 = request.POST.get('new_password2')
+
+        #校验参数
+        if not all([old_password, new_password, new_password]):
+            return http.HttpResponseForbidden('缺少必传参数')
+        if not request.user.check_password(old_password):
+            return render(request, 'user_center_pass.html', {'origin_password_errmsg': '原始密码错误'})
+        if not re.match(r'^[0-9a-zA-Z]{8,20}$', new_password):
+            return http.HttpResponseForbidden('密码最少8位，最长20位')
+        if new_password != new_password2:
+            return http.HttpResponseForbidden('两次输入密码不一致')
+
+        #修改密码
+        try:
+            request.user.set_password(new_password)
+            request.user.save()
+        except Exception as e:
+            logger.error(e)
+            return render(request, 'user_center_pass.html', {'change_password_errmsg': '修改密码失败'})
+
+        #清理状态保持
+        logout(request)
+        response = redirect(reverse('users:login'))
+        response.delete_cookie('username')
+
+        #修改密码成功，重定向到登录界面
+        return response
+
+
 class AddressTitleView(LoginRequiredJSONMixin, View):
     """修改地址标题"""
 
