@@ -40,5 +40,5 @@ urlpatterns = [
     #payment
     url(r'^', include('payment.urls', namespace='payment')),  #支付宝支付
     #admin
-    url(r'^meiduo_admin/', include('meiduo_admin.urls', namespace='admin')),  #后台管理
+    url(r'^meiduo_admin/', include('meiduo_admin.urls', namespace='meiduo_admin')),  #后台管理
 ]
