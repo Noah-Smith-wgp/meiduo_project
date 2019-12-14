@@ -135,7 +135,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': '122.51.161.120',
         'PORT': 8306,
-        'USER': 'root',
+        'USER': 'python',
         'PASSWORD': 'mysql',
         'NAME': 'meiduo_mall'
     },
@@ -335,5 +335,5 @@ CRONJOBS = [
 CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
 
 
-#配置数据库读写路由
+#配置主从数据库读写路由
 DATABASE_ROUTERS = ['meiduo_mall.utils.db_router.MasterSlaveDBRouter']
