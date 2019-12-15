@@ -54,3 +54,19 @@ class UserDayActiveCountAPIView(APIView):
         }
 
         return Response(data)
+
+
+class UserDayOrderCountAPIView(APIView):
+
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+
+        today = date.today()
+        count = User.objects.filter(orderinfo__create_time__gte=today).count()
+        data = {
+            'count': count,
+            'date': today
+        }
+
+        return Response(data)
