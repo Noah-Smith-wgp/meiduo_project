@@ -1,12 +1,13 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAdminUser
+from rest_framework.generics import ListCreateAPIView
 
 from meiduo_admin.serializers.user import UserListViewSerializer
 from users.models import User
 from meiduo_admin.utils import PageNum
 
 
-class UserListView(ListAPIView):
+class UserListView(ListCreateAPIView):
 
     permission_classes = [IsAdminUser]
 
