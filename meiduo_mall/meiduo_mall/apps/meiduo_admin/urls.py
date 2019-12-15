@@ -2,6 +2,7 @@ from django.conf.urls import url
 from rest_framework_jwt.views import obtain_jwt_token
 
 from .views import statistical
+from .views import user
 
 
 urlpatterns = [
@@ -19,4 +20,7 @@ urlpatterns = [
     url(r'^statistical/month_increment/$', statistical.UserMonthAddCountAPIView.as_view()),
     # # 日分类商品访问量
     url(r'^statistical/goods_day_views/$', statistical.CategoryDayVisitCountView.as_view()),
+
+    # 查询用户
+    url(r'^users/$', user.UserListView.as_view()),
 ]
