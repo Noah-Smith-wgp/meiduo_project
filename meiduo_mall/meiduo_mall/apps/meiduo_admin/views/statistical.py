@@ -95,13 +95,33 @@ class UserMonthAddCountAPIView(APIView):
         return Response(data)
 
 
-class CategoryDayVisitCountView(APIView):
+# class CategoryDayVisitCountView(APIView):
+#
+#     permission_classes = [IsAdminUser]
+#
+#     def get(self, request):
+#
+#         today = date.today()
+#         data = GoodsVisitCount.objects.filter(date__gte=today)
+#         serializer = GoodsVisitSerializer(data, many=True)
+#         return Response(serializer.data)
+
+
+# class CategoryDayVisitCountView(ListModelMixin, GenericAPIView):
+#
+#     permission_classes = [IsAdminUser]
+#
+#     serializer_class = GoodsVisitSerializer
+#     queryset = GoodsVisitCount.objects.filter(date__gte=date.today())
+#
+#     def get(self, request):
+#
+#         return self.list(request)
+
+
+class CategoryDayVisitCountView(ListAPIView):
 
     permission_classes = [IsAdminUser]
 
-    def get(self, request):
-
-        today = date.today()
-        data = GoodsVisitCount.objects.filter(date__gte=today)
-        serializer = GoodsVisitSerializer(data, many=True)
-        return Response(serializer.data)
+    serializer_class = GoodsVisitSerializer
+    queryset = GoodsVisitCount.objects.filter(date__gte=date.today())
