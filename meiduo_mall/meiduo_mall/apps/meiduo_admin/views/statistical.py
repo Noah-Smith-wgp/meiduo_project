@@ -38,3 +38,19 @@ class UserDayCountAPIView(APIView):
         }
 
         return Response(data)
+
+
+class UserDayActiveCountAPIView(APIView):
+
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+
+        today = date.today()
+        count = User.objects.filter(last_login__gte=today).count()
+        data = {
+            'count': count,
+            'date': today
+        }
+
+        return Response(data)

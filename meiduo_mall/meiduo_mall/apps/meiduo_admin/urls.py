@@ -14,9 +14,9 @@ urlpatterns = [
     # 日活跃用户统计
     url(r'^statistical/day_active/$', statistical.UserDayActiveCountAPIView.as_view()),
     # 日下单用户量统计
-    url(r'^statistical/day_orders/$', statistical.UserDayOrderCountAPIView.as_view()),
-    # 月增用户统计
-    url(r'^statistical/month_increment/$', statistical.UserMonthOrderCountAPIView.as_view()),
-    # 日分类商品访问量
-    url(r'^statistical/goods_day_views/$', statistical.CategoryDayVisitCountView.as_view()),
+    # url(r'^statistical/day_orders/$', statistical.UserDayOrderCountAPIView.as_view()),
+    # # 月增用户统计
+    # url(r'^statistical/month_increment/$', statistical.UserMonthOrderCountAPIView.as_view()),
+    # # 日分类商品访问量
+    # url(r'^statistical/goods_day_views/$', statistical.CategoryDayVisitCountView.as_view()),
 ]
