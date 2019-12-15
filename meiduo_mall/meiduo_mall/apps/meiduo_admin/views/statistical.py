@@ -70,3 +70,26 @@ class UserDayOrderCountAPIView(APIView):
         }
 
         return Response(data)
+
+
+class UserMonthAddCountAPIView(APIView):
+
+    permission_classes = [IsAdminUser]
+
+    def get(self, request):
+
+        today = date.today()
+        # 获取一个月前的时间
+        month_ago_date = today - timedelta(days=30)
+        # 构建数据列表
+        data = []
+        for i in range(1, 31):
+            current_date = month_ago_date + timedelta(days=i)
+            next_date = month_ago_date + timedelta(days=i+1)
+            count = User.objects.filter(date_joined__gte=current_date, date_joined__lt=next_date).count()
+            data.append({
+                'count': count,
+                'date': current_date
+            })
+
+        return Response(data)

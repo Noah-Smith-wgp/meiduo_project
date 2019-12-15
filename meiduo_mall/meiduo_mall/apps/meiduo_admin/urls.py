@@ -16,7 +16,7 @@ urlpatterns = [
     # 日下单用户量统计
     url(r'^statistical/day_orders/$', statistical.UserDayOrderCountAPIView.as_view()),
     # 月增用户统计
-    # url(r'^statistical/month_increment/$', statistical.UserMonthOrderCountAPIView.as_view()),
+    url(r'^statistical/month_increment/$', statistical.UserMonthAddCountAPIView.as_view()),
     # # 日分类商品访问量
     # url(r'^statistical/goods_day_views/$', statistical.CategoryDayVisitCountView.as_view()),
 ]
