@@ -5,6 +5,7 @@ from rest_framework.routers import DefaultRouter
 from .views import statistical
 from .views import user
 from .views import image
+from .views import sku
 
 
 urlpatterns = [
@@ -32,6 +33,9 @@ urlpatterns = [
 ]
 
 router = DefaultRouter()
-router.register(r'skus/images', image.ImageViewSet, basename='image')
 
+router.register(r'skus/images', image.ImageViewSet, basename='image')
+urlpatterns += router.urls
+
+router.register(r'skus', sku.SKUModelViewSet, basename='sku')
 urlpatterns += router.urls
