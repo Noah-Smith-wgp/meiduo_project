@@ -1,8 +1,10 @@
 from django.conf.urls import url
 from rest_framework_jwt.views import obtain_jwt_token
+from rest_framework.routers import DefaultRouter
 
 from .views import statistical
 from .views import user
+from .views import image
 
 
 urlpatterns = [
@@ -23,4 +25,10 @@ urlpatterns = [
 
     # 查询用户
     url(r'^users/$', user.UserListView.as_view()),
+
 ]
+
+router = DefaultRouter()
+router.register(r'skus/images', image.ImageViewSet, basename='image')
+
+urlpatterns += router.urls
