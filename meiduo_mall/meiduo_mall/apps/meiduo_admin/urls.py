@@ -26,6 +26,9 @@ urlpatterns = [
     # 查询用户
     url(r'^users/$', user.UserListView.as_view()),
 
+    # 获取sku表id
+    url(r'^skus/simple/$', image.SKUListView.as_view()),
+
 ]
 
 router = DefaultRouter()

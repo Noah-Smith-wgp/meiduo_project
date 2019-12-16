@@ -371,6 +371,6 @@ REST_FRAMEWORK = {
 #设置JWT token过期时间
 import datetime
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_RESPONSE_PAYLOAD_HANDLER':'meiduo_admin.utils.jwt_response_payload_handler',
 }
