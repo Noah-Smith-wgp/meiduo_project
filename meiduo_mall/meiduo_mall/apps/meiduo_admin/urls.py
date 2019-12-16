@@ -34,6 +34,8 @@ urlpatterns = [
     url(r'^skus/categories/$', sku.SKUCategoryView.as_view()),
     # 获取spu表名称数据
     url(r'^goods/simple/$', sku.SPUSimpleView.as_view()),
+    # 获取spu商品规格
+    url(r'^goods/(?P<pk>\d+)/specs/$', sku.SPUSpecificationView.as_view()),
 
 ]
 

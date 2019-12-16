@@ -18,6 +18,7 @@ class ImageViewSet(ModelViewSet):
     pagination_class = PageNum
 
     def create(self, request, *args, **kwargs):
+
         sku_id = request.data.get('sku')
         image = request.FILES.get('image')
 
