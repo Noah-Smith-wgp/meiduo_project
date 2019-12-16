@@ -30,6 +30,9 @@ urlpatterns = [
     # 获取sku表id
     url(r'^skus/simple/$', image.SKUListView.as_view()),
 
+    # 获取sku三级分类信息
+    url(r'^skus/categories/$', sku.SKUCategoryView.as_view()),
+
 ]
 
 router = DefaultRouter()
