@@ -32,6 +32,8 @@ urlpatterns = [
 
     # 获取sku三级分类信息
     url(r'^skus/categories/$', sku.SKUCategoryView.as_view()),
+    # 获取spu表名称数据
+    url(r'^goods/simple/$', sku.SPUSimpleView.as_view()),
 
 ]
 
