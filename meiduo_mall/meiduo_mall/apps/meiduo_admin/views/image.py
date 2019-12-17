@@ -28,9 +28,12 @@ class ImageViewSet(ModelViewSet):
 
         result = client.upload_by_buffer(image.read())
 
-        if result['status'] == 'Upload successed.':
+        if result['Status'] == 'Upload successed.':
             # 获取上传后的路径
             image_url = result.get('Remote file_id')
+
+            # windows系统需要用此方法修改image_url,将group1\\M00/00/02/...改为group1/M00/00/02/...
+            image_url = image_url.replace('\\', '/')
 
             # 保存图片
             img = SKUImage.objects.create(sku_id=sku_id, image=image_url)
@@ -38,7 +41,7 @@ class ImageViewSet(ModelViewSet):
             return Response({
                 'id': img.id,
                 'sku_id': sku_id,
-                'image': image_url
+                'image': img.image.url
             }, status=status.HTTP_201_CREATED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
