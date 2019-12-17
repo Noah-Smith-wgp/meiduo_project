@@ -46,6 +46,35 @@ class ImageViewSet(ModelViewSet):
     #     else:
     #         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    def update(self, request, *args, **kwargs):
+
+        sku = request.data.get('sku')
+        image = request.FILES.get('image')
+        id = kwargs.get('pk')
+
+        from fdfs_client.client import Fdfs_client
+        client = Fdfs_client('meiduo_mall/utils/fastdfs/client.conf')
+        result = client.upload_by_buffer(image.read())
+
+        if result.get('Status') == 'Upload successed.':
+            image_url = result.get('Remote file_id')
+
+            # windows系统需要用此方法修改image_url,将group1\\M00/00/02/...改为group1/M00/00/02/...
+            image_url = image_url.replace('\\', '/')
+
+            # 保存图片
+            img = SKUImage.objects.get(id = id)
+            img.image = image_url
+            img.save()
+
+            return Response({
+                'id': img.id,
+                'sku': sku,
+                'image': img.image.url
+            }, status=status.HTTP_201_CREATED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class SKUListView(ListAPIView):
 

@@ -41,8 +41,10 @@ urlpatterns = [
 
 router = DefaultRouter()
 
+# 获取图片列表数据
 router.register(r'skus/images', image.ImageViewSet, basename='image')
 urlpatterns += router.urls
 
+# 获取SKU表数据
 router.register(r'skus', sku.SKUModelViewSet, basename='sku')
 urlpatterns += router.urls
