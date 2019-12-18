@@ -1,3 +1,4 @@
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -14,3 +15,13 @@ class OrderInfoViewSet(ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         return Response({'errmsg': 'error'})
+
+    @action(methods=['PUT'], detail=True)
+    def status(self, request, pk):
+        order = self.get_object()
+        status = request.data.get('status')
+
+        order.status = status
+        order.save()
+        serializer = self.get_serializer(order)
+        return Response(serializer.data)
