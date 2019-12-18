@@ -7,6 +7,7 @@ from .views import user
 from .views import image
 from .views import sku
 from .views import order
+from .views import permission
 
 
 urlpatterns = [
@@ -52,4 +53,8 @@ urlpatterns += router.urls
 
 # 获取订单表表数据
 router.register(r'orders', order.OrderInfoViewSet, basename='orders')
+urlpatterns += router.urls
+
+# 获取权限数据
+router.register(r'permission/perms', permission.PermissionViewSet, basename='perms')
 urlpatterns += router.urls
