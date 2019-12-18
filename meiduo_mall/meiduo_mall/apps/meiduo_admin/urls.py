@@ -39,6 +39,8 @@ urlpatterns = [
     # 获取spu商品规格
     url(r'^goods/(?P<pk>\d+)/specs/$', sku.SPUSpecificationView.as_view()),
 
+    # 获取权限类型列表数据
+    url(r'^permission/content_types/$', permission.ContentTypeView.as_view()),
 ]
 
 router = DefaultRouter()
