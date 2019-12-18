@@ -36,6 +36,14 @@ class SKUSerializer(serializers.ModelSerializer):
         for item in specs:
             SKUSpecification.objects.create(sku=sku, spec_id=item.get('spec_id'), option_id=item.get('option_id'))
 
+        # 因前端未设置上传图片的选项，此处为了防止celery生成静态页面时报错，自己添加一个保存图片操作，无意义
+        # sku.default_image = 'group1/M00/00/02/CtM3BVrRdPeAXNDMAAYJrpessGQ9777651'
+        # sku.save()
+
+        # 生成详情页面
+        from celery_tasks.html.tasks import generate_static_sku_detail_html
+        generate_static_sku_detail_html.delay(sku.id)
+
         return sku
 
 

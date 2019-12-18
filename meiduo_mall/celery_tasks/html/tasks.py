@@ -1,26 +1,14 @@
-#!/usr/bin/env python
-
-
-# 追加指向项目根路径的导包路径：告诉脚本文件导包路径是从项目根路径开始的
-import sys
-sys.path.insert(0, '../')
-
-import os
-if not os.getenv('DJANGO_SETTINGS_MODULE'):
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'meiduo_mall.settings.dev'
-
-import django
-django.setup()
-
-
 from django.template import loader
 from django.conf import settings
+import os
 
 from goods.models import SKU
 from contents.utils import get_categories
 from goods.utils import get_goods_specs, get_breadcrumb
+from celery_tasks.main import celery_app
 
 
+@celery_app.task(name='generate_static_sku_detail_html')
 def generate_static_sku_detail_html(sku_id):
     """
     生成静态商品详情页面
@@ -56,10 +44,3 @@ def generate_static_sku_detail_html(sku_id):
     file_path = os.path.join(settings.STATICFILES_DIRS[0], 'detail/' + str(sku_id) + '.html')
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(detail_html_text)
-
-
-if __name__ == '__main__':
-    skus = SKU.objects.all()
-    for sku in skus:
-        print(sku.id)
-        generate_static_sku_detail_html(sku.id)

@@ -150,35 +150,35 @@ DATABASES = {
 CACHES = {
     "default": { # 默认
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://122.51.161.120:6379/0",
+        "LOCATION": "redis://49.232.164.126:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "session": { # session
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://122.51.161.120:6379/1",
+        "LOCATION": "redis://49.232.164.126:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "verify_code": { # 验证码
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://122.51.161.120:6379/2",
+        "LOCATION": "redis://49.232.164.126:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "history": { # 用户浏览记录
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://122.51.161.120:6379/3",
+        "LOCATION": "redis://49.232.164.126:6379/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "carts": { # 购物车
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://122.51.161.120:6379/4",
+        "LOCATION": "redis://49.232.164.126:6379/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
