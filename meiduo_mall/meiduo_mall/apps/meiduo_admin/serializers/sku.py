@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from contents.models import GoodsCategory
 from goods.models import SKU, SPU, SPUSpecification, SpecificationOption, SKUSpecification
+from django.db import transaction
 
 
 class SKUSpecificationSerializer(serializers.ModelSerializer):
@@ -35,20 +36,34 @@ class SKUSerializer(serializers.ModelSerializer):
         # 把validated_data中的 specs 删除掉
         if 'specs' in validated_data:
             del validated_data['specs']
+        # 开启事务
+        with transaction.atomic():
+            # 设置还原点
+            save_point = transaction.savepoint()
 
-        # sku = super().create(validated_data)
-        sku = SKU.objects.create(**validated_data)
+            try:
+                # 保存数据
+                # sku = super().create(validated_data)
+                sku = SKU.objects.create(**validated_data)
 
-        for item in specs:
-            SKUSpecification.objects.create(sku=sku, spec_id=item.get('spec_id'), option_id=item.get('option_id'))
+                # 自定义方法保存specs
+                for item in specs:
+                    SKUSpecification.objects.create(sku=sku, spec_id=item.get('spec_id'), option_id=item.get('option_id'))
+            except Exception:
+                # 捕获异常，数据库回滚到还原点
+                transaction.savepoint_rollback(save_point)
+                raise serializers.ValidationError('保存失败')
+            else:
+                # 数据库未报异常，提交保存
+                transaction.savepoint_commit(save_point)
 
-        # 因前端未设置上传图片的选项，此处为了防止celery生成静态页面时报错，自己添加一个保存图片操作，无意义
-        # sku.default_image = 'group1/M00/00/02/CtM3BVrRdPeAXNDMAAYJrpessGQ9777651'
-        # sku.save()
+                # 因前端未设置上传图片的选项，此处为了防止celery生成静态页面时报错，自己添加一个保存图片操作，无意义
+                # sku.default_image = 'group1/M00/00/02/CtM3BVrRdPeAXNDMAAYJrpessGQ9777651'
+                # sku.save()
 
-        # 生成详情页面
-        from celery_tasks.html.tasks import generate_static_sku_detail_html
-        generate_static_sku_detail_html.delay(sku.id)
+                # 生成详情页面
+                from celery_tasks.html.tasks import generate_static_sku_detail_html
+                generate_static_sku_detail_html.delay(sku.id)
 
         return sku
 
@@ -59,16 +74,25 @@ class SKUSerializer(serializers.ModelSerializer):
         if 'specs' in validated_data:
             del validated_data['specs']
 
-        # instance = super().update(instance, validated_data)
-        SKU.objects.filter(id=instance.id).update(**validated_data)
+        with transaction.atomic():
+            save_point = transaction.savepoint()
 
-        for item in specs:
-            SKUSpecification.objects.filter(
-                sku_id=instance.id, spec_id=item.get('spec_id')).update(option_id=item.get('option_id'))
+            try:
+                # instance = super().update(instance, validated_data)
+                SKU.objects.filter(id=instance.id).update(**validated_data)
 
-        # 生成详情页面
-        from celery_tasks.html.tasks import generate_static_sku_detail_html
-        generate_static_sku_detail_html.delay(instance.id)
+                for item in specs:
+                    SKUSpecification.objects.filter(
+                        sku_id=instance.id, spec_id=item.get('spec_id')).update(option_id=item.get('option_id'))
+            except Exception:
+                transaction.savepoint_rollback(save_point)
+                raise serializers.ValidationError('更新失败')
+            else:
+                transaction.savepoint_commit(save_point)
+
+                # 生成详情页面
+                from celery_tasks.html.tasks import generate_static_sku_detail_html
+                generate_static_sku_detail_html.delay(instance.id)
 
         return instance
 
