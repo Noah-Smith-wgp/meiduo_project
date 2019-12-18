@@ -6,6 +6,7 @@ from .views import statistical
 from .views import user
 from .views import image
 from .views import sku
+from .views import order
 
 
 urlpatterns = [
@@ -47,4 +48,8 @@ urlpatterns += router.urls
 
 # 获取SKU表数据
 router.register(r'skus', sku.SKUModelViewSet, basename='sku')
+urlpatterns += router.urls
+
+# 获取订单表表数据
+router.register(r'orders', order.OrderInfoViewSet, basename='orders')
 urlpatterns += router.urls
