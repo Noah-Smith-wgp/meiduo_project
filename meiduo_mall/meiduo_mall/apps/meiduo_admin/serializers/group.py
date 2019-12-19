@@ -34,3 +34,14 @@ class AdminSerializer(serializers.ModelSerializer):
         admin.save()
 
         return admin
+
+    def update(self, instance, validated_data):
+        super().update(instance, validated_data)
+
+        password = validated_data.get('password')
+
+        if password is not None:
+            instance.set_password(password)
+            instance.save()
+
+        return instance
