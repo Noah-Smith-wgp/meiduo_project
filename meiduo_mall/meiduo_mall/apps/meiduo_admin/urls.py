@@ -67,3 +67,7 @@ urlpatterns += router.urls
 # 获取用户组数据
 router.register(r'permission/groups', group.GroupModelViewSet, basename='groups')
 urlpatterns += router.urls
+
+# 获取管理员数据
+router.register(r'permission/admins', group.AdminModelViewSet, basename='admins')
+urlpatterns += router.urls
