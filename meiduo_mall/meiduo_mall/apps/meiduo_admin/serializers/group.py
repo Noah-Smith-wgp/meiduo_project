@@ -23,3 +23,14 @@ class AdminSerializer(serializers.ModelSerializer):
                 'write_only': True
             }
         }
+
+    # 自定义保存方法，加密密码
+    def create(self, validated_data):
+        admin = super().create(validated_data)
+
+        password = validated_data.get('password')
+        admin.set_password(password)
+        admin.is_staff = True
+        admin.save()
+
+        return admin

@@ -44,6 +44,8 @@ urlpatterns = [
     url(r'^permission/content_types/$', permission.ContentTypeView.as_view()),
     # 获取权限表数据
     url(r'^permission/simple/$', group.GroupListAPIView.as_view()),
+    # 管理员获取分组表数据
+    url(r'^permission/groups/simple/$', group.AdminSimpleListAPIView.as_view()),
 ]
 
 router = DefaultRouter()

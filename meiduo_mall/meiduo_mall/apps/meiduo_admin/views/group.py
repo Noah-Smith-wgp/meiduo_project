@@ -28,3 +28,9 @@ class AdminModelViewSet(ModelViewSet):
     queryset = User.objects.filter(is_staff=True)
     serializer_class = AdminSerializer
     pagination_class = PageNum
+
+
+class AdminSimpleListAPIView(ListAPIView):
+
+    serializer_class = GroupSerializer
+    queryset = Group.objects.all()
