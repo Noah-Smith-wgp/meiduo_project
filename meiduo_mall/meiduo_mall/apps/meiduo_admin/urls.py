@@ -8,6 +8,7 @@ from .views import image
 from .views import sku
 from .views import order
 from .views import permission
+from .views import group
 
 
 urlpatterns = [
@@ -41,6 +42,8 @@ urlpatterns = [
 
     # 获取权限类型列表数据
     url(r'^permission/content_types/$', permission.ContentTypeView.as_view()),
+    # 获取权限表数据
+    url(r'^permission/simple/$', group.GroupListAPIView.as_view()),
 ]
 
 router = DefaultRouter()
@@ -59,4 +62,8 @@ urlpatterns += router.urls
 
 # 获取权限数据
 router.register(r'permission/perms', permission.PermissionViewSet, basename='perms')
+urlpatterns += router.urls
+
+# 获取用户组数据
+router.register(r'permission/groups', group.GroupModelViewSet, basename='groups')
 urlpatterns += router.urls
