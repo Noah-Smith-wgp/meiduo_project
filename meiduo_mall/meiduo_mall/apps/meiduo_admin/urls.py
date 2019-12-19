@@ -9,6 +9,7 @@ from .views import sku
 from .views import order
 from .views import permission
 from .views import group
+from .views import spu
 
 
 urlpatterns = [
@@ -72,4 +73,8 @@ urlpatterns += router.urls
 
 # 获取管理员数据
 router.register(r'permission/admins', group.AdminModelViewSet, basename='admins')
+urlpatterns += router.urls
+
+# 获取spu表数据
+router.register(r'goods', spu.SPUModelViewSet, basename='goods')
 urlpatterns += router.urls
