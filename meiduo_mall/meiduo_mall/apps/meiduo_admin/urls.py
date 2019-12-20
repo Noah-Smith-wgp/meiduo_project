@@ -10,6 +10,8 @@ from .views import order
 from .views import permission
 from .views import group
 from .views import spu
+from .views import spec
+from .views import option
 
 
 urlpatterns = [
@@ -83,4 +85,12 @@ urlpatterns += router.urls
 
 # 获取spu表数据
 router.register(r'goods', spu.SPUModelViewSet, basename='goods')
+urlpatterns += router.urls
+
+# 获取规格表数据
+router.register(r'goods/specs', spec.SpecificationViewSet, basename='specs')
+urlpatterns += router.urls
+
+# 获取规格选项表数据
+router.register(r'specs/options', option.OptionModelViewSet, basename='options')
 urlpatterns += router.urls
