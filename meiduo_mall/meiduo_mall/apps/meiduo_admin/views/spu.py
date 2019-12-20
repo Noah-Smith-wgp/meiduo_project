@@ -24,3 +24,13 @@ class GoodsCategory1ListAPIView(ListAPIView):
 
     serializer_class = GoodsCategorySerializer
     queryset = GoodsCategory.objects.filter(parent_id=None)
+
+
+class GoodsCategory2or3ListAPIView(ListAPIView):
+
+    serializer_class = GoodsCategorySerializer
+
+    def get_queryset(self):
+
+        pk = self.kwargs['pk']
+        return GoodsCategory.objects.filter(parent=pk)

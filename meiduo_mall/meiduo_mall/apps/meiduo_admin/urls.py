@@ -51,7 +51,8 @@ urlpatterns = [
     url(r'^goods/brands/simple/$', spu.BrandListAPIView.as_view()),
     # 获取一级分类信息
     url(r'^goods/channel/categories/$', spu.GoodsCategory1ListAPIView.as_view()),
-
+    # 获取二三级分类信息
+    url(r'^goods/channel/categories/(?P<pk>\d+)/$', spu.GoodsCategory2or3ListAPIView.as_view()),
 ]
 
 router = DefaultRouter()
