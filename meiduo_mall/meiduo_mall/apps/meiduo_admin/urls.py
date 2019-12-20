@@ -47,6 +47,8 @@ urlpatterns = [
     url(r'^permission/simple/$', group.GroupListAPIView.as_view()),
     # 管理员获取分组表数据
     url(r'^permission/groups/simple/$', group.AdminSimpleListAPIView.as_view()),
+    # 获取spu品牌信息
+    url(r'^goods/brands/simple/$', spu.BrandListAPIView.as_view()),
 ]
 
 router = DefaultRouter()
