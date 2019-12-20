@@ -49,6 +49,9 @@ urlpatterns = [
     url(r'^permission/groups/simple/$', group.AdminSimpleListAPIView.as_view()),
     # 获取spu品牌信息
     url(r'^goods/brands/simple/$', spu.BrandListAPIView.as_view()),
+    # 获取一级分类信息
+    url(r'^goods/channel/categories/$', spu.GoodsCategory1ListAPIView.as_view()),
+
 ]
 
 router = DefaultRouter()

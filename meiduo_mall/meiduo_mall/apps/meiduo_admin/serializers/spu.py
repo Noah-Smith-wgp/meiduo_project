@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from contents.models import GoodsCategory
 from goods.models import SPU, Brand
 
 
@@ -21,4 +22,11 @@ class BrandSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Brand
+        fields = '__all__'
+
+
+class GoodsCategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = GoodsCategory
         fields = '__all__'
