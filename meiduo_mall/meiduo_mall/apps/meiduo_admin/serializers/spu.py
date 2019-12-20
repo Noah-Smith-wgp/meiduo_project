@@ -13,6 +13,10 @@ class SPUSerializer(serializers.ModelSerializer):
     category2_id = serializers.IntegerField()
     category3_id = serializers.IntegerField()
 
+    category1 = serializers.StringRelatedField()
+    category2 = serializers.StringRelatedField()
+    category3 = serializers.StringRelatedField()
+
     class Meta:
         model = SPU
         fields = '__all__'
