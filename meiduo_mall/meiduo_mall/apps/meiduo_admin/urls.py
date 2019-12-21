@@ -12,6 +12,7 @@ from .views import group
 from .views import spu
 from .views import spec
 from .views import option
+from .views import channel
 
 
 urlpatterns = [
@@ -57,6 +58,7 @@ urlpatterns = [
     url(r'^goods/channel/categories/(?P<pk>\d+)/$', spu.GoodsCategory2or3ListAPIView.as_view()),
     # 获取规格信息
     url(r'^goods/specs/simple/$', option.OptionListAPIView.as_view()),
+
 ]
 
 router = DefaultRouter()
@@ -87,6 +89,10 @@ urlpatterns += router.urls
 
 # 获取规格表数据
 router.register(r'goods/specs', spec.SpecificationViewSet, basename='specs')
+urlpatterns += router.urls
+
+# 获取商品频道表数据
+router.register(r'goods/channels', channel.GoodsChannelViewSet, basename='channels')
 urlpatterns += router.urls
 
 # 获取spu表数据
