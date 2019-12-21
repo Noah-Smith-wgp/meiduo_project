@@ -58,7 +58,10 @@ urlpatterns = [
     url(r'^goods/channel/categories/(?P<pk>\d+)/$', spu.GoodsCategory2or3ListAPIView.as_view()),
     # 获取规格信息
     url(r'^goods/specs/simple/$', option.OptionListAPIView.as_view()),
-
+    # 获取频道组
+    url(r'^goods/channel_types/$', channel.ChannelGroupListAPIView.as_view()),
+    # 频道管理获取商品一级分类信息
+    url(r'^goods/categories/$', spu.GoodsCategory1ListAPIView.as_view()),
 ]
 
 router = DefaultRouter()

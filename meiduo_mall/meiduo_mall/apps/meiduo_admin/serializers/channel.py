@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from contents.models import GoodsChannel
+from contents.models import GoodsChannel, GoodsChannelGroup
 
 
 class GoodsChannelSerializer(serializers.ModelSerializer):
@@ -13,4 +13,11 @@ class GoodsChannelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GoodsChannel
+        fields = '__all__'
+
+
+class ChannelGroupSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = GoodsChannelGroup
         fields = '__all__'
