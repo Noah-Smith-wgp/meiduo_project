@@ -13,6 +13,7 @@ from .views import spu
 from .views import spec
 from .views import option
 from .views import channel
+from .views import brand
 
 
 urlpatterns = [
@@ -96,6 +97,10 @@ urlpatterns += router.urls
 
 # 获取商品频道表数据
 router.register(r'goods/channels', channel.GoodsChannelViewSet, basename='channels')
+urlpatterns += router.urls
+
+# 获取商品品牌表数据
+router.register(r'goods/brands', brand.BrandViewSet, basename='brands')
 urlpatterns += router.urls
 
 # 获取spu表数据
