@@ -30,7 +30,7 @@ class GoodsCommentView(View):
                 'score': order_goods.score,
             })
 
-            return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'comment_list': comment_list})
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'comment_list': comment_list})
 
 
 class DetailVisitView(View):
