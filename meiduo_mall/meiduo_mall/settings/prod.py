@@ -15,9 +15,9 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#print(BASE_DIR)
+# print(BASE_DIR)
 
-#查看项目导包路径
+# 查看项目导包路径
 import sys
 # print(sys.path)
 
@@ -47,26 +47,26 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'haystack', # 全文检索   #pip安装的子应用
+    'haystack',  # 全文检索   # pip安装的子应用
 
-    'django_crontab',   #定时任务   #pip安装的子应用
+    'django_crontab',   # 定时任务   # pip安装的子应用
     'rest_framework',
-    'corsheaders',   #跨域CORS
+    'corsheaders',   # 跨域CORS
 
-    # 'meiduo_mall.apps.users', #用户模块
-    'users', #用户模块
-    'contents', #首页广告
-    'verifications', # 验证
-    'oauth',  #第三方认证登录
-    'areas',  #省市区
-    'goods',  #商品模块
-    'carts',  #购物车
-    'orders',  #订单
-    'payment',   #支付宝
+    # 'meiduo_mall.apps.users',  # 用户模块
+    'users',  # 用户模块
+    'contents',  # 首页广告
+    'verifications',  # 验证
+    'oauth',  # 第三方认证登录
+    'areas',  # 省市区
+    'goods',  # 商品模块
+    'carts',  # 购物车
+    'orders',  # 订单
+    'payment',   # 支付宝
 ]
 
 MIDDLEWARE = [
-    #CORS需放在最上方
+    # CORS需放在最上方
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -108,7 +108,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            #补充jinja2模板引擎环境
+            # 补充jinja2模板引擎环境
             'environment': 'meiduo_mall.utils.jinja2_env.jinja2_environment',
         },
     },
@@ -129,16 +129,16 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 
 DATABASES = {
     'default': {  # 写（主机）
-        'ENGINE': 'django.db.backends.mysql', # 数据库引擎
-        'HOST': '122.51.161.120', # 数据库主机
-        'PORT': 3306, # 数据库端口
-        'USER': 'python', # 数据库用户名
-        'PASSWORD': 'mysql', # 数据库用户密码
-        'NAME': 'meiduo_mall' # 数据库名字
+        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
+        'HOST': '127.0.0.1',  # 数据库主机
+        'PORT': 3306,  # 数据库端口
+        'USER': 'python',  # 数据库用户名
+        'PASSWORD': 'mysql',  # 数据库用户密码
+        'NAME': 'meiduo_mall'  # 数据库名字
     },
-    'slave': { # 读（从机）
+    'slave': {  # 读（从机）
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '122.51.161.120',
+        'HOST': '127.0.0.1',
         'PORT': 8306,
         'USER': 'python',
         'PASSWORD': 'mysql',
@@ -146,45 +146,45 @@ DATABASES = {
     },
 }
 
-#redis缓存
+# redis缓存
 CACHES = {
-    "default": { # 默认
+    "default": {  # 默认
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://49.232.164.126:6379/0",
+        "LOCATION": "redis://127.0.0.1:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    "session": { # session
+    "session": {  # session
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://49.232.164.126:6379/1",
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    "verify_code": { # 验证码
+    "verify_code": {  # 验证码
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://49.232.164.126:6379/2",
+        "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    "history": { # 用户浏览记录
+    "history": {  # 用户浏览记录
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://49.232.164.126:6379/3",
+        "LOCATION": "redis://127.0.0.1:6379/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    "carts": { # 购物车
+    "carts": {  # 购物车
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://49.232.164.126:6379/4",
+        "LOCATION": "redis://127.0.0.1:6379/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
 }
-#指定session数据存储引擎和位置
+# 指定session数据存储引擎和位置
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "session"
 
@@ -264,7 +264,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -286,23 +286,23 @@ AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileAuthBackend']
 
 LOGIN_URL = '/login/'
 
-#QQ登录参数
+# QQ登录参数
 QQ_CLIENT_ID = '101518219'
 QQ_CLIENT_SECRET = '418d84ebdc7241efb79536886ae95224'
 QQ_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback'
 
-#WB登录参数
+# WB登录参数
 WB_CLIENT_ID = '2109446271'
 WB_CLIENT_SECRET = 'c2d958f5be19eb6a02063a6867161a28'
 WB_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback2'
 
 # 配置发邮件服务器
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' # 指定邮件后端
-EMAIL_HOST = 'smtp.163.com' # 发邮件主机
-EMAIL_PORT = 25 # 发邮件端口
-EMAIL_HOST_USER = '18211672297@163.com' # 授权的邮箱
-EMAIL_HOST_PASSWORD = 'wang134612a' # 邮箱授权时获得的密码，非注册登录密码
-EMAIL_FROM = '美多商城<hmmeiduo@163.com>' # 发件人抬头
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # 指定邮件后端
+EMAIL_HOST = 'smtp.163.com'  # 发邮件主机
+EMAIL_PORT = 25  # 发邮件端口
+EMAIL_HOST_USER = '18211672297@163.com'  # 授权的邮箱
+EMAIL_HOST_PASSWORD = 'wang134612a'  # 邮箱授权时获得的密码，非注册登录密码
+EMAIL_FROM = '美多商城<hmmeiduo@163.com>'  # 发件人抬头
 
 # 邮箱验证链接
 EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
@@ -311,28 +311,28 @@ EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
 DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
 
 # 存储服务器位置
-FDFS_BASE_URL = 'http://122.51.161.120:8888/'
+FDFS_BASE_URL = 'http://127.0.0.1:8888/'
 
 # Haystack
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://122.51.161.120:9200/', # Elasticsearch服务器ip地址，端口号固定为9200
-        'INDEX_NAME': 'meiduo_mall', # Elasticsearch建立的索引库的名称
+        'URL': 'http://127.0.0.1:9200/',  # Elasticsearch服务器ip地址，端口号固定为9200
+        'INDEX_NAME': 'meiduo_mall',  # Elasticsearch建立的索引库的名称
     },
 }
 
 # 当添加、修改、删除数据时，自动生成索引
 # HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
-#支付宝SDK配置参数
+# 支付宝SDK配置参数
 ALIPAY_APPID = '2016101600696468'
 ALIPAY_DEBUG = True
 ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
 ALIPAY_RETURN_URL = 'http://www.meiduo.site:8000/payment/status/'
 
 
-#定时任务
+# 定时任务
 CRONJOBS = [
     # 每1分钟生成一次首页静态文件
     ('*/1 * * * *', 'contents.crons.generate_static_index_html', '>> ' + os.path.join(os.path.dirname(BASE_DIR), 'logs/crontab.log'))
@@ -340,37 +340,38 @@ CRONJOBS = [
 CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
 
 
-#配置主从数据库读写路由
+# 配置主从数据库读写路由
 DATABASE_ROUTERS = ['meiduo_mall.utils.db_router.MasterSlaveDBRouter']
 
 
-#CORS允许所有访问
+# CORS允许所有访问
 # CORS_ORIGIN_ALLOW_ALL = True
 
 
 # CORS白名单
 CORS_ORIGIN_WHITELIST = (
-    'http://127.0.0.1:8080',
+    'http://127.0.0.1:8080',  # 生产环境要把后台管理配置里的www.meiduo.site改为127.0.0.1
+    'http://127.0.0.1:8000',
     'http://localhost:8080',
-    'http://www.meiduo.site:8080',
-    'http://www.meiduo.site:8000'
+    # 'http://www.meiduo.site:8080',
+    # 'http://www.meiduo.site:8000'
 )
 
 CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
 
-#DRF框架配置
+# DRF框架配置
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        #配置jwt
+        # 配置jwt
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
 
-#设置JWT token过期时间
+# 设置JWT token过期时间
 import datetime
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
-    'JWT_RESPONSE_PAYLOAD_HANDLER':'meiduo_admin.utils.jwt_response_payload_handler',
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'meiduo_admin.utils.jwt_response_payload_handler',
 }

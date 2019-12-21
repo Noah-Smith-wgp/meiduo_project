@@ -85,12 +85,12 @@ urlpatterns += router.urls
 router.register(r'permission/admins', group.AdminModelViewSet, basename='admins')
 urlpatterns += router.urls
 
-# 获取spu表数据
-router.register(r'goods', spu.SPUModelViewSet, basename='goods')
-urlpatterns += router.urls
-
 # 获取规格表数据
 router.register(r'goods/specs', spec.SpecificationViewSet, basename='specs')
+urlpatterns += router.urls
+
+# 获取spu表数据
+router.register(r'goods', spu.SPUModelViewSet, basename='goods')
 urlpatterns += router.urls
 
 # 获取规格选项表数据
