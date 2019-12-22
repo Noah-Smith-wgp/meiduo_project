@@ -34,3 +34,29 @@ class BrandSerializer(serializers.ModelSerializer):
             return brand
         else:
             raise serializers.ValidationError('上传失败')
+
+    def update(self, instance, validated_data):
+
+        image = validated_data.get('logo')
+        name = validated_data.get('name')
+        first_letter = validated_data.get('first_letter')
+
+        from fdfs_client.client import Fdfs_client
+        client = Fdfs_client('meiduo_mall/utils/fastdfs/client.conf')
+        result = client.upload_by_buffer(image.read())
+
+        if result['Status'] == 'Upload successed.':
+            image_url = result.get('Remote file_id')
+
+            # windows系统需要用此方法修改image_url,将group1\\M00/00/02/...改为group1/M00/00/02/...
+            image_url = image_url.replace('\\', '/')
+
+            instance.logo = image_url
+            instance.name = name
+            instance.first_letter = first_letter
+
+            instance.save()
+
+            return instance
+        else:
+            raise serializers.ValidationError('更新失败')
