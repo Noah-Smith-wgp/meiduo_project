@@ -66,7 +66,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    #CORS需放在最上方
+    # CORS需放在最上方
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -344,7 +344,7 @@ CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
 DATABASE_ROUTERS = ['meiduo_mall.utils.db_router.MasterSlaveDBRouter']
 
 
-#CORS允许所有访问
+# CORS允许所有访问
 # CORS_ORIGIN_ALLOW_ALL = True
 
 
@@ -358,17 +358,17 @@ CORS_ORIGIN_WHITELIST = (
 
 CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
 
-#DRF框架配置
+# DRF框架配置
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        #配置jwt
+        # 配置jwt
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
 }
 
-#设置JWT token过期时间
+# 设置JWT token过期时间
 import datetime
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),

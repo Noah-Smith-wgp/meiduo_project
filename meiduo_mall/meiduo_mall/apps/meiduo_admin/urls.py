@@ -63,6 +63,9 @@ urlpatterns = [
     url(r'^goods/channel_types/$', channel.ChannelGroupListAPIView.as_view()),
     # 频道管理获取商品一级分类信息
     url(r'^goods/categories/$', spu.GoodsCategory1ListAPIView.as_view()),
+
+    # 使用前后端分离实现注册用户
+    url(r'^register/$', user.RegisterAPIView.as_view()),
 ]
 
 router = DefaultRouter()

@@ -545,7 +545,7 @@ class RegisterView(View):
         sms_code_client = request.POST.get('sms_code')
 
         # 校验参数：首先判断必传参数是否缺少，然后以取反的方式以此校验参数
-        #all()如果发现列表中有任意一个元素为空就返回false， 反之返回true
+        # all()如果发现列表中有任意一个元素为空就返回false， 反之返回true
         if not all([username, password, password2, mobile, sms_code_client, allow]):
             return http.HttpResponseForbidden('缺少必传参数')
         # 判断用户名是否是5-20个字符
