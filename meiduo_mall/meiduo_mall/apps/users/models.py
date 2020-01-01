@@ -2,11 +2,11 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from meiduo_mall.utils.models import BaseModel
-
 # Create your models here.
 
+
 class User(AbstractUser):
-    """自定义用户模型类"""
+    """自定义用户模型类:增加字段"""
     mobile = models.CharField(max_length=11, unique=True, verbose_name='手机号')
     email_active = models.BooleanField(default=False, verbose_name='邮箱状态')
     default_address = models.ForeignKey('Address', related_name='users', null=True, blank=True,

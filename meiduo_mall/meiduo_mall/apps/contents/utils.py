@@ -10,7 +10,7 @@ def get_categories():
     channels = GoodsChannel.objects.order_by('group_id', 'sequence')
     # 遍历37个频道可以获取到频道对应的组号
     for channel in channels:
-
+        # 获取到组号（是categories的key）
         group_id = channel.group_id
         # 对频道进行分组
         if group_id not in categories:

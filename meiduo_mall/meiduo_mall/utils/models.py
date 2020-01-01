@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class BaseModel(models.Model):
     """补充模型类字段"""
 

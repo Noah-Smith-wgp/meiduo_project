@@ -1,4 +1,4 @@
-#封装任务：任务就是函数
+# 封装任务：任务就是函数
 from celery_tasks.sms.yuntongxun.ccp_sms import CCP
 from celery_tasks.sms import constants
 from celery_tasks.main import celery_app

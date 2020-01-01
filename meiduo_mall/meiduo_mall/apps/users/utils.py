@@ -22,7 +22,7 @@ def check_verify_email_token(token):
         user_id = data.get('user_id')
         email = data.get('email')
         try:
-            user = User.objects.get(id = user_id, email = email)
+            user = User.objects.get(id=user_id, email=email)
         except User.DoesNotExist:
             return None
         else:
@@ -50,11 +50,11 @@ def get_user_by_account(account):
     """
     try:
         if re.match('^1[3-9]\d{9}$', account):
-            #手机号登录
-            user = User.objects.get(mobile = account)
+            # 手机号登录
+            user = User.objects.get(mobile=account)
         else:
-            #用户名登录
-            user = User.objects.get(username = account)
+            # 用户名登录
+            user = User.objects.get(username=account)
     except User.DoesNotExist:
         return None
     else:
@@ -63,6 +63,7 @@ def get_user_by_account(account):
 
 class UsernameMobileAuthBackend(ModelBackend):
     """自定义用户认证后端"""
+
     def authenticate(self, request, username=None, password=None, **kwargs):
         """
         重写认证方法，实现多账号登录
@@ -72,10 +73,10 @@ class UsernameMobileAuthBackend(ModelBackend):
         :param kwargs: 其他参数
         :return: user
         """
-        #根据传入的username获取user对象。username可以是手机号也可以是账号
+        # 根据传入的username获取user对象。username可以是手机号也可以是账号
         user = get_user_by_account(username)
-        #校验user是否存在并校验密码是否正确
+        # 校验user是否存在并校验密码是否正确:check_password 校验密码的方法（set_password:加密密码的方法）
         if user and user.check_password(password):
             return user
         else:
-            return  None
+            return None

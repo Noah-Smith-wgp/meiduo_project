@@ -14,7 +14,7 @@ def generate_static_index_html():
     # 查询商品分类
     categories = get_categories()
 
-    #广告内容
+    # 广告内容
     contents = {}
     content_categories = ContentCategory.objects.all()
     for cat in content_categories:
@@ -26,11 +26,11 @@ def generate_static_index_html():
         'contents': contents
     }
 
-    #获取首页模板文件
+    # 获取首页模板文件
     template = loader.get_template('index.html')
-    #渲染首页HTML字符串
+    # 渲染首页HTML字符串
     html_text = template.render(context)
-    #将首页html字符串写入到指定目录，命名‘index.html
+    # 将首页html字符串写入到指定目录，命名‘index.html
     file_path = os.path.join(settings.STATICFILES_DIRS[0], 'index.html')
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(html_text)

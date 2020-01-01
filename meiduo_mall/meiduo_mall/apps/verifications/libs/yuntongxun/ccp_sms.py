@@ -46,20 +46,24 @@ def send_template_sms(to, datas, tempId):
 
 class CCP(object):
     """发送短信的单例类：初始化并提供单例"""
-    #单例设计模式保证内存当中有且只有一个实例化对象
+    # 单例设计模式保证内存当中有且只有一个实例化对象
 
     def __new__(cls, *args, **kwargs):
-        #new方法初始化并提供单例
+        # new方法初始化并提供单例
         # 判断是否存在类属性_instance，_instance是类CCP的唯一对象，即单例
+        # hasattr('要判断的类对象', '单例属性名')
         if not hasattr(CCP, "_instance"):
-            #cls:表示当前类对象CCP，我们将创建出来的对象绑定到CCP
+            # 如果没有单例，就new一个
+            # cls:表示当前类对象CCP，我们将创建出来的对象绑定到CCP
             cls._instance = super(CCP, cls).__new__(cls, *args, **kwargs)
+
             # rest = REST(_serverIP, _serverPort, _softVersion)
             # cls._instance.rest = rest
-            #初始化REST_SDK
+            # 初始化REST_SDK：保证rest对象跟单例是同生共死的
             cls._instance.rest = REST(_serverIP, _serverPort, _softVersion)
             cls._instance.rest.setAccount(_accountSid, _accountToken)
             cls._instance.rest.setAppId(_appId)
+
         return cls._instance
 
     def send_template_sms(self, to, datas, temp_id):
@@ -70,6 +74,7 @@ class CCP(object):
         :param temp_id: 模板编号，默认免费提供id为1的模板
         :return: 发短信结果
         """
+        # 调用发送短信的接口函数
         result = self.rest.sendTemplateSMS(to, datas, temp_id)
         if result.get("statusCode") == "000000":
             # 返回0，表示发送短信成功

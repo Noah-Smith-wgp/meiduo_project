@@ -28,9 +28,8 @@ def generate_static_sku_detail_html(sku_id):
     :return:
     """
 
-    #查询sku信息
+    # 查询sku信息
     sku = SKU.objects.get(id=sku_id)
-
 
     # 查询商品频道分类
     categories = get_categories()
@@ -48,12 +47,12 @@ def generate_static_sku_detail_html(sku_id):
         'specs': goods_specs
     }
 
-    #获取详情页模板文件
+    # 获取详情页模板文件
     template = loader.get_template('detail.html')
-    #渲染详情页html字符串
+    # 渲染详情页html字符串
     detail_html_text = template.render(context)
 
-    #将详情页html字符串写入到指定目录，命名'index.html'
+    # 将详情页html字符串写入到指定目录，命名'index.html'
     file_path = os.path.join(settings.STATICFILES_DIRS[0], 'detail/' + str(sku_id) + '.html')
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(detail_html_text)
