@@ -31,7 +31,7 @@ class GoodsCommentView(View):
                 'score': order_goods.score,
             })
 
-            return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'comment_list': comment_list})
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'comment_list': comment_list})
 
 
 # url(r'^detail/visit/(?P<category_id>\d+)/$', views.DetailVisitView.as_view()),

@@ -73,10 +73,18 @@ class UsernameMobileAuthBackend(ModelBackend):
         :param kwargs: 其他参数
         :return: user
         """
-        # 根据传入的username获取user对象。username可以是手机号也可以是账号
-        user = get_user_by_account(username)
-        # 校验user是否存在并校验密码是否正确:check_password 校验密码的方法（set_password:加密密码的方法）
-        if user and user.check_password(password):
-            return user
-        else:
-            return None
+        if request:  #在前台用户登录验证时添加request参数，如果有传入request则为前台登录，否则为后台登录
+            #根据传入的username获取user对象。username可以是手机号也可以是账号
+            user = get_user_by_account(username)
+            #校验user是否存在并校验密码是否正确
+            if user and user.check_password(password):
+                return user
+            else:
+                return None
+        else:  #没有得到request参数，则为后台登录
+            try:
+                user = User.objects.get(username=username, is_staff=True)
+            except User.DoesNotExist:
+                return None
+            if user.check_password(password):
+                return user

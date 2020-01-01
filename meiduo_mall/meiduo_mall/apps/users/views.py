@@ -479,7 +479,7 @@ class LoginView(View):
             return http.HttpResponseForbidden('密码最少8位，最长20位')
 
         # 认证用户登录：本质就是使用用户名和密码去查询用户是否存在
-        user = authenticate(username=username, password=password)
+        user = authenticate(request, username=username, password=password)
         if user is None:
             return render(request, 'login.html', {'account_errmag': '账号或密码错误'})
 

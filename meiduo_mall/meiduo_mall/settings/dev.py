@@ -35,7 +35,7 @@ SECRET_KEY = 'd00dly!!5y^yr%x8xeeg4stunn8a^kiqe%33h86m5we-q6l=e='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.meiduo.site', '192.168.19.58']
+ALLOWED_HOSTS = ['www.meiduo.site', '127.0.0.1']
 
 
 # Application definition
@@ -51,6 +51,8 @@ INSTALLED_APPS = [
     'haystack',  # 全文检索   # pip安装的子应用
 
     'django_crontab',   # 定时任务   # pip安装的子应用
+    'rest_framework',
+    'corsheaders',   #跨域CORS
 
     # 'meiduo_mall.apps.users',  # 用户模块
     'users',  # 用户模块
@@ -65,6 +67,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # CORS需放在最上方
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -146,35 +150,35 @@ DATABASES = {
 CACHES = {
     "default": {  # 默认
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://122.51.161.120:6379/0",
+        "LOCATION": "redis://49.232.164.126:6379/0",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "session": {  # session
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://122.51.161.120:6379/1",
+        "LOCATION": "redis://49.232.164.126:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "verify_code": {  # 验证码
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://122.51.161.120:6379/2",
+        "LOCATION": "redis://49.232.164.126:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "history": {  # 用户浏览记录
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://122.51.161.120:6379/3",
+        "LOCATION": "redis://49.232.164.126:6379/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "carts": {  # 购物车
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://122.51.161.120:6379/4",
+        "LOCATION": "redis://49.232.164.126:6379/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -339,3 +343,35 @@ CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
 
 # 配置主从数据库读写路由
 DATABASE_ROUTERS = ['meiduo_mall.utils.db_router.MasterSlaveDBRouter']
+
+
+# CORS允许所有访问
+# CORS_ORIGIN_ALLOW_ALL = True
+
+
+# CORS白名单
+CORS_ORIGIN_WHITELIST = (
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
+    'http://www.meiduo.site:8080',
+    'http://www.meiduo.site:8000'
+)
+
+CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
+
+# DRF框架配置
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 配置jwt
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+# 设置JWT token过期时间
+import datetime
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_RESPONSE_PAYLOAD_HANDLER':'meiduo_admin.utils.jwt_response_payload_handler',
+}

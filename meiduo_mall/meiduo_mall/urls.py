@@ -32,11 +32,13 @@ urlpatterns = [
     # areas
     url(r'^', include('areas.urls')),  # 省市区
     # goods
-    url(r'^', include('goods.urls', namespace='goods')),  # 商品模块
+    url(r'^', include('goods.urls', namespace='goods')), # 商品模块
     # carts
     url(r'^', include('carts.urls', namespace='carts')),  # 购物车
     # orders
     url(r'^', include('orders.urls', namespace='orders')),  # 订单
     # payment
     url(r'^', include('payment.urls', namespace='payment')),  # 支付宝支付
+    # admin
+    url(r'^meiduo_admin/', include('meiduo_admin.urls', namespace='meiduo_admin')),  # 后台管理
 ]
