@@ -52,7 +52,7 @@ INSTALLED_APPS = [
 
     'django_crontab',   # 定时任务   # pip安装的子应用
     'rest_framework',
-    'corsheaders',   #跨域CORS
+    'corsheaders',   # 跨域CORS
 
     # 'meiduo_mall.apps.users',  # 用户模块
     'users',  # 用户模块
@@ -373,5 +373,5 @@ REST_FRAMEWORK = {
 import datetime
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
-    'JWT_RESPONSE_PAYLOAD_HANDLER':'meiduo_admin.utils.jwt_response_payload_handler',
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'meiduo_admin.utils.jwt_response_payload_handler',
 }
