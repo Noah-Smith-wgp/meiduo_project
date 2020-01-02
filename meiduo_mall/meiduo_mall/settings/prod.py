@@ -311,7 +311,7 @@ EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
 DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fdfs_storage.FastDFSStorage'
 
 # 存储服务器位置
-FDFS_BASE_URL = 'http://127.0.0.1:8888/'
+FDFS_BASE_URL = 'http://122.51.161.120:8888/'
 
 # Haystack
 HAYSTACK_CONNECTIONS = {
@@ -353,6 +353,8 @@ CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:8080',  # 生产环境要把后台管理配置里的www.meiduo.site改为127.0.0.1
     'http://127.0.0.1:8000',
     'http://localhost:8080',
+    'http://122.51.161.120:9000',
+    'http://122.51.161.120:8080',
     # 'http://www.meiduo.site:8080',
     # 'http://www.meiduo.site:8000'
 )
